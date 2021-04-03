@@ -8,6 +8,9 @@ class UsuarioCTRL{
             return 0;
         }
 
+        $vo->setDtCad(UtilCTRL::DataAtual());
+        $vo->setStatus(1);
+        $vo->setSenha(UtilCTRL::RetornaCriptografado($vo->getCpf()));
         $dao = new UsuarioDAO;
         return $dao->InserirUsuarioAdmDAO($vo);
     }

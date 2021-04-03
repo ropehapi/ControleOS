@@ -105,7 +105,38 @@ function ValidarTela(tela){
                 ret = false;
             }
             break;
+
+        case 18: // Tela de Usuario
+
+            if ($("#tipo").val().trim() != '') {
+
+                if ($("#nome").val().trim() == '' || $("#cpf").val().trim() == '') {
+                    toastr.warning(RetornarMsg(0));
+                    return false;
+                }
+
+            }
+
+            if ($("#tipo").val().trim() == '2' || $("#tipo").val().trim() == '3') {
+
+                if ($("#email").val().trim() == '' || $("#telefone").val().trim() == '' || $("#endereco").val().trim() == '') {
+                    toastr.warning(RetornarMsg(0));
+                    return false;
+                }
+            }
+
+            if ($("#tipo").val().trim() == '2') {
+                
+                if ($("#setor").val().trim() == '') {
+                    toastr.warning(RetornarMsg(0));
+                    return false;
+                }
+            }
+
+            break;
     }
+
+    
 
     return ret;
 }

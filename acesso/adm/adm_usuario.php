@@ -1,16 +1,17 @@
 <?php
 
 require_once '../../CTRL/UsuarioCTRL.php';
+require_once '../../CTRL/SetorCTRL.php';
 require_once '../../VO/UsuarioVo.php';
 require_once '../../VO/TecnicoVo.php';
 require_once '../../VO/FuncionarioVo.php';
 
-if(isset($_POST['btnGravar'])){
-    
+if (isset($_POST['btnGravar'])) {
+
     $ctrl = new UsuarioCTRL;
     $tipo = $_POST['tipo'];
 
-    switch($tipo){
+    switch ($tipo) {
         case '1':
             $vo = new UsuarioVO;
 
@@ -36,7 +37,7 @@ if(isset($_POST['btnGravar'])){
             $ret = $ctrl->InserirUserTecnico($vo);
 
             break;
-            
+
         case '3':
             $vo = new FuncionarioVo;
 
@@ -53,6 +54,9 @@ if(isset($_POST['btnGravar'])){
             break;
     }
 }
+
+$setorCTRL = new SetorCTRL;
+$setores = $setorCTRL->ConsultarSetorCTRL();
 
 
 ?>
@@ -105,31 +109,36 @@ if(isset($_POST['btnGravar'])){
                         <form method="POST" action="adm_usuario.php">
                             <div class="form-group">
                                 <label>Tipo</label>
-                                <select id="tipo" name="tipo" class="form-control select2" style="width: 100%;">
-                                    <option value="" selected="selected">Selecione</option>
-                                    <option value="1" selected="selected">Administrador</option>
-                                    <option value="2" selected="selected">Funcionário</option>
-                                    <option value="3" selected="selected">Técnico</option>
+                                <select id="tipo" name="tipo" class="form-control select2" style="width: 100%;" onchange="MostrarTipoUsuario(this.value)">
+                                    <option value="" >Selecione</option>
+                                    <option value="1" >Administrador</option>
+                                    <option value="2" >Funcionário</option>
+                                    <option value="3" >Técnico</option>
                                 </select>
                             </div>
+                            <div id="divTipo123" style="display: none;">
+                                <div class="form-group">
+                                    <label>Nome</label>
+                                    <input id="nome" name="nome" type="text" class="form-control" placeholder="Digite aqui">
+                                </div>
 
-                            <div class="form-group">
-                                <label>Nome</label>
-                                <input id="nome" name="nome" type="text" class="form-control" placeholder="Digite aqui">
+                                <div class="form-group">
+                                    <label>CPF</label>
+                                    <input id="cpf" name="cpf" type="text" class="form-control" placeholder="Digite aqui">
+                                </div>
                             </div>
-
-                            <div class="form-group">
-                                <label>CPF</label>
-                                <input id="cpf" name="cpf" type="text" class="form-control" placeholder="Digite aqui">
+                            <div id="divTipo2" style="display: none;">
+                                <div class="form-group">
+                                    <label>Setor</label>
+                                    <select id="setor" name="setor" class="form-control select2" style="width: 100%;">
+                                        <option value="" selected="selected">Selecione</option>
+                                        <?php for($i=0;$i<count($setores);$i++){?>
+                                            <option value="<?=$setores[$i]['id_setor'] ?>" selected="selected"><?=$setores[$i]['nome_setor'] ?></option>
+                                            <?php }?>
+                                    </select>
+                                </div>
                             </div>
-
-                            <div class="form-group">
-                                <label>Setor</label>
-                                <select  id="setor" name="setor" class="form-control select2" style="width: 100%;">
-                                    <option value="" selected="selected">Selecione</option>
-                                </select>
-                            </div>
-
+                            <div id="divTipo23" style="display: none;">
                             <div class="form-group">
                                 <label>Email</label>
                                 <input id="email" name="email" type="text" class="form-control" placeholder="Digite aqui">
@@ -144,25 +153,14 @@ if(isset($_POST['btnGravar'])){
                                 <label>Endereço</label>
                                 <input id="endereco" name="endereco" type="text" class="form-control" placeholder="Digite aqui">
                             </div>
+                            </div>
 
-                            <button onclick="return ValidarTela(9)" name="btnGravar" class="btn btn-success">Gravar</button>
-                            </form>
+                            <button onclick="return ValidarTela(18)" id="btnGravar" style="display: none;" name="btnGravar" class="btn btn-success">Gravar</button>
+                        </form>
                     </div>
 
                 </div>
-                <div>
-                    <div class="form-group">
-
-
-                    </div>
-                    <div class="form-group">
-                        < </div>
-                            <hr>
-
-                    </div>
-                    <!-- /.card-body -->
-                    <!-- /.card-footer-->
-                </div>
+                
                 <!-- /.card -->
 
             </section>

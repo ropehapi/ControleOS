@@ -28,43 +28,97 @@ class UsuarioDAO extends Conexao{
 
     public function InserirFuncDAO(FuncionarioVO $vo){
         $conexao = parent::retornaConexao();
-        $comando = 'insert into tb_funcionario (email_func,tel_func,endereco_func,id_setor)
-                    values (?,?,?,?)';
+        $comando = 'insert into 
+                    tb_usuario(tipo_usuario,nome_usuario,cpf_usuario,senha_usuario,status_usuario,data_cadastro)
+                    values (?,?,?,?,?,?)';
         $sql = new PDOStatement();
-        $sql = $conexao->prepare(($comando));
-        $sql->bindValue(1,$vo->getEmailFunc());
-        $sql->bindValue(2,$vo->getTelFunc());
-        $sql->bindValue(3,$vo->getEnderecoFunc());
-        $sql->bindValue(4,$vo->getIdSetor());
+        $sql = $conexao->prepare($comando);
+        $sql->bindValue(1,$vo->getTipo());
+        $sql->bindValue(2,$vo->getNome());
+        $sql->bindValue(3,$vo->getCpf());
+        $sql->bindValue(4,$vo->getSenha());
+        $sql->bindValue(5,$vo->getStatus());
+        $sql->bindValue(6,$vo->getDtCad());
+
+        $conexao->beginTransaction();
 
         try{
+            //Inserção na tb_usuario
             $sql->execute();
+
+            //Recuperar o ID do usuário cadastrado
+            $id_user = $conexao->lastInsertId();
+            $comando = 'insert into tb_funcionario (
+                id_usuario_fun,
+                id_setor,
+                email_fun,
+                tel_fun,
+                endereco_fun
+            )
+            value(?,?,?,?,?)';
+            $sql = $conexao->prepare($comando);
+            $i=1;
+            $sql->bindValue($i++,$id_user);
+            $sql->bindValue($i++,$vo->getIdSetor());
+            $sql->bindValue($i++,$vo->getEmailFunc());
+            $sql->bindValue($i++,$vo->getTelFunc());
+            $sql->bindValue($i++,$vo->getEnderecoFunc());
+            //Insere na tb_tecnico
+            $sql->execute();
+            //Confirmar a transação
+            $conexao->commit();
             return 1;
         }catch(Exception $ex){
+            //Cancela a transação
+            $conexao->rollBack();
             return -1;
         }
     }
 
     public function InserirTecDAO(TecnicoVO $vo){
         $conexao = parent::retornaConexao();
-        $comando = 'insert into tb_tecnico (email_tec,tel_tec,endereco_tec)
-                    values (?,?,?,?)';
+        $comando = 'insert into 
+                    tb_usuario(tipo_usuario,nome_usuario,cpf_usuario,senha_usuario,status_usuario,data_cadastro)
+                    values (?,?,?,?,?,?)';
         $sql = new PDOStatement();
-        $sql = $conexao->prepare(($comando));
-        $sql->bindValue(1,$vo->getEmailTec());
-        $sql->bindValue(2,$vo->getTelTec());
-        $sql->bindValue(3,$vo->getEnderecoTec());
+        $sql = $conexao->prepare($comando);
+        $sql->bindValue(1,$vo->getTipo());
+        $sql->bindValue(2,$vo->getNome());
+        $sql->bindValue(3,$vo->getCpf());
+        $sql->bindValue(4,$vo->getSenha());
+        $sql->bindValue(5,$vo->getStatus());
+        $sql->bindValue(6,$vo->getDtCad());
+
+        $conexao->beginTransaction();
 
         try{
+            //Inserção na tb_usuario
             $sql->execute();
+
+            //Recuperar o ID do usuário cadastrado
+            $id_user = $conexao->lastInsertId();
+            $comando = 'insert into tb_tecnico (
+                id_usuario_tec,
+                email_tec,
+                tel_tec,
+                endereco_tec
+            )
+            value(?,?,?,?)';
+            $sql = $conexao->prepare($comando);
+            $i=1;
+            $sql->bindValue($i++,$id_user);
+            $sql->bindValue($i++,$vo->getEmailTec());
+            $sql->bindValue($i++,$vo->getTelTec());
+            $sql->bindValue($i++,$vo->getEnderecoTec());
+            //Insere na tb_tecnico
+            $sql->execute();
+            //Confirmar a transação
+            $conexao->commit();
             return 1;
         }catch(Exception $ex){
+            //Cancela a transação
+            $conexao->rollBack();
             return -1;
         }
     }
-
-   // public function ConsultarUsuarioDAO(){
-   //   $conexao = parent::retornaConexao();
-   //   $conexao = ''
-   // }
 }

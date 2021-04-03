@@ -19,4 +19,8 @@ class UtilCTRL{
         self::SetarFusoHorario();
         return date('Y-m-d');
     }
+
+    public static function RetornaCriptografado($palavra){
+        return password_hash($palavra,PASSWORD_DEFAULT);
+    }
 }
