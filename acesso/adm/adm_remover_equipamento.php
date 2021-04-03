@@ -11,9 +11,9 @@ if (isset($_POST['btnPesquisar'])) {
     $vo = new AlocarVo;
     $ctrl = new EquipamentoCTRL;
 
-    $vo->setIdSetor($_POST['setor']);
+    $idSetor = $_POST['setor'];
 
-    $equipamentosAlocados = $ctrl->ProcurarEquipamentosNoSetor($vo);
+    $eqs = $ctrl->FiltrarAlocado($idSetor);
 }
 
 $setores = $setorDAO->ConsultarSetorDAO();
@@ -83,61 +83,62 @@ $setores = $setorDAO->ConsultarSetorDAO();
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Equipamentos alocados</h3>
+                <?php if (isset($eqs)) { ?>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Equipamentos alocados</h3>
 
-                                <div class="card-tools">
-                                    <div class="input-group input-group-sm" style="width: 150px;">
-                                        <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+                                    <div class="card-tools">
+                                        <div class="input-group input-group-sm" style="width: 150px;">
+                                            <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
 
-                                        <div class="input-group-append">
-                                            <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                                            <div class="input-group-append">
+                                                <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body table-responsive p-0">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>Equipamento</th>
-                                            <th>Ação</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                                <!-- /.card-header -->
 
-                                        <?php for ($i = 0; $i < count($setores); $i++) { ?>
+                                <div class="card-body table-responsive p-0">
+                                    <table class="table table-bordered">
+                                        <thead>
                                             <tr>
-                                                <td><?= $equipamentosAlocados[$i]['id_equipamento'] ?></td>
-                                                <td>
-                                                    <a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal-excluir" onclick="CarregarDadosExcluir('<?= $setores[$i]['id_setor'] ?>','<?= $setores[$i]['nome_setor'] ?>')">Excluir</a>
-                                                </td>
+                                                <th>Equipamento</th>
+                                                <th>Ação</th>
                                             </tr>
+                                        </thead>
+                                        <tbody>
 
-                                        <?php } ?>
-                                    </tbody>
-                                </table>
+                                            <?php for ($i = 0; $i < count($eqs); $i++) { ?>
+                                                <tr>
+                                                    <td><?= $eqs[$i]['ident_equipamento'] ?>/<?= $eqs[$i]['desc_equipamento'] ?></td>
+                                                    <td>
+                                                        <?php if ($eqs[$i]['sit_alocar'] != 3) { ?>
+                                                            <a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal-excluir" onclick="CarregarDadosExcluir('<?= $eqs[$i]['id_setor'] ?>','<?= $eqs[$i]['nome_setor'] ?>')">Excluir</a>
+                                                        <?php } else {
+                                                            echo '<i>Em manutenção</i>';
+                                                        } ?>
+                                                    </td>
+                                                </tr>
+
+                                            <?php } ?>
+                                        </tbody>
+                                    </table>
+                                <?php } ?>
                                 <form method="post" action="adm_setor.php">
                                     <?php
                                     include_once '../../template/_modal_excluir.php';
                                     ?>
                                 </form>
-
-                                <form method="post" action="adm_setor.php">
-                                    <?php
-                                    include_once '../adm/modal/_alterar_setor.php';
-                                    ?>
-                                </form>
+                                </div>
+                                <!-- /.card-body -->
                             </div>
-                            <!-- /.card-body -->
+                            <!-- /.card -->
                         </div>
-                        <!-- /.card -->
                     </div>
-                </div>
         </div>
         <!-- /.card -->
 

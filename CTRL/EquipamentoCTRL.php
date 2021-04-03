@@ -75,9 +75,9 @@ class EquipamentoCTRL
         return $dao->ExcluirEquipamentoDAO($vo);
     }
 
-    public function ProcurarEquipamentosNoSetor(AlocarVo $vo){
+    public function FiltrarAlocado($idSetor){
         $dao = new EquipamentoDAO;
-        return $dao->ProcurarEquipamentosNoSetorDAO($vo);
+        return $dao->FiltrarAlocado($idSetor);
     }
 
 }

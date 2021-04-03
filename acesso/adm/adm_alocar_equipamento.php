@@ -14,7 +14,7 @@ if(isset($_POST['btnGravar'])){
      $vo->setIdEquipamento($_POST['equipamento']);
      $vo->setIdSetor($_POST['setor']);
      
-     $ret = $ctrl->ProcurarEquipamentosNoSetor($vo);
+     $ret = $ctrl->AlocarEquipamentoCTRL($vo);
 
 }
 

@@ -159,15 +159,33 @@ class EquipamentoDAO extends Conexao
         }
     }
 
-    public function ProcurarEquipamentosNoSEtorDAO(AlocarVo $vo)
+    public function FiltrarAlocado($idSetor)
     {
         $conexao = parent::retornaConexao();
-        $comando = 'select id_equipamento from tb_alocar_equip where id_setor = ? and data_remover is null';
+        $comando = 'select al.id_alocar,
+                           eq.ident_equipamento,
+                           eq.desc_equipamento,
+                           al.sit_alocar
+                    from tb_alocar_equip as al
+                    inner join tb_equipamento as eq
+                    on al.id_equipamento = eq.id_equipamento
+                    where al.id_setor = ?
+                    and al.data_remover is null';
         $sql = new PDOStatement;
         $sql = $conexao->prepare($comando);
-        $sql->bindValue(1,$vo->getIdSetor());
+        $sql->bindValue(1,$idSetor);
         $sql->setFetchMode(PDO::FETCH_ASSOC);
         $sql->execute();
-        $sql->fetchAll();
+        return $sql->fetchAll();
+    }
+
+    public function RemoverEquipamentoDAO(EquipamentoVo $vo){
+        $conexao = parent::retornaConexao();
+        $comando = 'update tb_alocar_equip
+                        set data_remover = ?,
+                            hora_remover = ?,
+                            sit_alocar = ?,
+                        where id_alocar = ?';
+        
     }
 }
