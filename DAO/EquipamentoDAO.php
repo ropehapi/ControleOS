@@ -179,13 +179,27 @@ class EquipamentoDAO extends Conexao
         return $sql->fetchAll();
     }
 
-    public function RemoverEquipamentoDAO(EquipamentoVo $vo){
+    public function RemoverEquipamentoDAO(AlocarVo $vo){
         $conexao = parent::retornaConexao();
         $comando = 'update tb_alocar_equip
                         set data_remover = ?,
                             hora_remover = ?,
-                            sit_alocar = ?,
+                            sit_alocar = ?
                         where id_alocar = ?';
-        
+        $sql = new PDOStatement;
+        $sql = $conexao->prepare($comando);
+        $i = 1;
+        $sql->bindValue($i++,$vo->getDataRemover());
+        $sql->bindValue($i++,$vo->getHoraRemover());
+        $sql->bindValue($i++,$vo->getSitAlocar());
+        $sql->bindValue($i++,$vo->getIdAlocar());
+
+        try{
+            $sql->execute();
+            return 1;
+        }catch(Exception $ex){
+            echo $ex->getMessage();
+            return -1;
+        }
     }
 }

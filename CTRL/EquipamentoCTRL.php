@@ -43,11 +43,15 @@ class EquipamentoCTRL
         return $dao->AlocarEquipamentoDAO($vo);
     }
 
-    public function RemoverEquipamentoCTRL(EquipamentoVo $vo)
+    public function RemoverEquipamentoCTRL(AlocarVo $vo)
     {
-        if ($vo->getSetorEquip() == '') {
-            return 0;
-        }
+        $dao = new EquipamentoDAO;
+
+        $vo->setDataRemover(UtilCTRL::DataAtual());
+        $vo->setHoraRemover(UtilCTRL::HoraAtual());
+        $vo->setSitAlocar(2);
+
+        return $dao->RemoverEquipamentoDAO($vo);
     }
 
     public function DetalharEquipamento($id)

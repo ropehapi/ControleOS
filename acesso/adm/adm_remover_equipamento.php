@@ -1,7 +1,6 @@
 <?php
 
 require_once '../../CTRL/EquipamentoCTRL.php';
-require_once '../../VO/EquipamentoVo.php';
 require_once '../../DAO/SetorDAO.php';
 require_once '../../VO/AlocarVo.php';
 
@@ -14,6 +13,14 @@ if (isset($_POST['btnPesquisar'])) {
     $idSetor = $_POST['setor'];
 
     $eqs = $ctrl->FiltrarAlocado($idSetor);
+}else if(isset($_POST['btnExcluir'])){
+    $id = $_POST['cod_item'];
+    $ctrl = new EquipamentoCTRL;
+    $vo = new AlocarVo;
+
+    $vo->setIdAlocar($id);
+
+    $ret = $ctrl->RemoverEquipamentoCTRL($vo);
 }
 
 $setores = $setorDAO->ConsultarSetorDAO();
@@ -117,7 +124,7 @@ $setores = $setorDAO->ConsultarSetorDAO();
                                                     <td><?= $eqs[$i]['ident_equipamento'] ?>/<?= $eqs[$i]['desc_equipamento'] ?></td>
                                                     <td>
                                                         <?php if ($eqs[$i]['sit_alocar'] != 3) { ?>
-                                                            <a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal-excluir" onclick="CarregarDadosExcluir('<?= $eqs[$i]['id_setor'] ?>','<?= $eqs[$i]['nome_setor'] ?>')">Excluir</a>
+                                                            <a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal-excluir" onclick="CarregarDadosExcluir('<?= $eqs[$i]['id_alocar'] ?>','<?= $eqs[$i]['desc_equipamento'] ?> / <?= $eqs[$i]['ident_equipamento'] ?>')">Excluir</a>
                                                         <?php } else {
                                                             echo '<i>Em manutenção</i>';
                                                         } ?>
@@ -128,7 +135,7 @@ $setores = $setorDAO->ConsultarSetorDAO();
                                         </tbody>
                                     </table>
                                 <?php } ?>
-                                <form method="post" action="adm_setor.php">
+                                <form method="post" action="adm_remover_equipamento.php">
                                     <?php
                                     include_once '../../template/_modal_excluir.php';
                                     ?>
