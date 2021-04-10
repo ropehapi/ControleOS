@@ -79,7 +79,7 @@ $modelos = $ctrl->ConsultarModeloCTRL();
                             <input id="nome" name="nome" type="text" class="form-control" placeholder="Digite aqui">
                         </div>
 
-                        <button onclick="return ValidarTela(4)" name="btnGravar" class="btn btn-success">Gravar</button>
+                        <button onclick="return InserirModelo()" name="btnGravar" class="btn btn-success">Gravar</button>
                         <p></p>
                         </form> 
                         <div class="row">
@@ -145,7 +145,7 @@ $modelos = $ctrl->ConsultarModeloCTRL();
 
                     </div>
                     <div class="form-group">
-                        < </div> <hr>
+                         </div> <hr>
 
                     </div>
                     <!-- /.card-body -->
