@@ -1,6 +1,7 @@
 <?php
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/ControleOs/DAO/SetorDAO.php';
+require_once 'UtilCTRL';
 
 class SetorCTRL
 {
@@ -12,7 +13,7 @@ class SetorCTRL
         }
 
         $dao = new SetorDAO;
-        return $dao->InserirSetorDAO($vo);
+        return $dao->InserirSetorDAO($vo,UtilCTRL::CodigoUserLogado());
     }
 
     public function ConsultarSetorCTRL()
@@ -29,6 +30,6 @@ class SetorCTRL
 
     public function AlterarSetorCTRL($vo){
         $dao = new SetorDAO;
-        return $dao->AlterarSetorDAO($vo);
+        return $dao->AlterarSetorDAO($vo,UtilCTRL::CodigoUserLogado());
     }
 }

@@ -31,3 +31,19 @@ function MostrarTipoUsuario(tipo){
         $("#divTipo2").show();
     }
 }
+
+function ValidarCpfCadastro(cpf){
+    if(cpf.trim() != ''){
+        $.post('ajax/verificar_cpf_duplicado.php',
+        {cpf_user : cpf},function(retorno){
+            if(retorno==1){
+                $("#val_cpf").html('O CPF: '+ cpf + ', já existe');
+                $("#val_cpf").val('');
+                $("#val_cpf").show();
+            }else{
+                $("#val_cpf").hide();
+            }
+        }
+        );
+    }
+}

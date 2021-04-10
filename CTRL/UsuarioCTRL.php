@@ -47,5 +47,10 @@ class UsuarioCTRL{
         }
     }
 
+    public function VerificarCpfCadastro($cpf){
+        $dao = new UsuarioDAO;
+        return $dao->VerificarCpfCadastro($cpf);
+    }
+
     
 }

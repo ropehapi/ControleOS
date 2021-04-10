@@ -2,9 +2,13 @@
 
 require_once 'ConexaoDAO.php';
 
+define('Inserir','InserirSetorDAO');
+define('Alterar','AlterarSetorDAO');
+define('Excluir','ExcluirSetorDAO');
+
 class SetorDAO extends Conexao{
 
-    public function InserirSetorDAO(SetorVo $vo){
+    public function InserirSetorDAO(SetorVo $vo , $idUser){
         $conexao = parent::retornaConexao();
         $comando = 'insert into tb_setor(nome_setor) value(?)';
         $sql = new PDOStatement();
@@ -15,6 +19,7 @@ class SetorDAO extends Conexao{
             $sql->execute();
             return 1;
         } catch(Exception $ex){
+            parent::GravarErro($ex->getMessage(),$idUser, Inserir);
             return -1;
         }
     }
@@ -44,7 +49,7 @@ class SetorDAO extends Conexao{
         }
     }
 
-    public function AlterarSetorDAO(SetorVo $vo){
+    public function AlterarSetorDAO(SetorVo $vo , $idUser){
         $conexao = parent::retornaConexao();
         $comando = 'update tb_setor set nome_setor = ? where id_setor = ?';
         $sql = new PDOStatement;
@@ -55,7 +60,8 @@ class SetorDAO extends Conexao{
         try {
             $sql->execute();
             return 1;
-        } catch (\Throwable $th) {
+        } catch (Exception $ex) {
+            parent::GravarErro($ex->getMessage(),$idUser, Alterar);
             return -1;
         }
     }

@@ -38,6 +38,31 @@ class Conexao {
     public static function retornaConexao() {
         return  self::Conectar();
     }
+
+    public static function GravarErro($msg,$idUser,$funcao){
+        $quebra = chr(13) . chr(10);
+
+
+        $arquivo = $_SERVER['DOCUMENT_ROOT'] . '/ControleOs/CTRL/Erro/erro.txt';
+
+        //Verifica se o arquivo nao existe
+        if(!file_exists($arquivo)){
+            $arquivo = fopen($arquivo , 'w');
+        }else{
+            $arquivo = fopen($arquivo , 'a+');
+        }
+
+        $textoFinal = '*******************************************'. $quebra;
+        $textoFinal .= 'Erro: ' . $msg;
+        $textoFinal .= 'Data: ' . date('Y-m-d') . 'Hora: ' . date('H:i'). $quebra;
+        $textoFinal .= 'Função chamada: ' . $funcao . $quebra;
+        $textoFinal .= 'Id usuário logado: ' . $idUser . $quebra;
+
+
+        //Escrever no arquivo o conteúdo do erro
+        fwrite($arquivo,$textoFinal);
+        fclose($arquivo);
+    } 
     
     
 }

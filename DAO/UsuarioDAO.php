@@ -121,4 +121,17 @@ class UsuarioDAO extends Conexao{
             return -1;
         }
     }
+
+    public function VerificarCpfCadastro($cpf){
+        $conexao = parent::retornaConexao();
+        $comando = 'select count(cpf_usuario) from tb_usuario where cpf_usuario = ?';
+        $sql = new PDOStatement;
+        $sql = $conexao->prepare($comando);
+        $sql->bindValue(1,$cpf);
+        $sql->setFetchMode(PDO::FETCH_ASSOC);
+        $sql->execute();
+        $result = $sql->fetchAll();
+
+        return $result[0]['contar'];
+    }
 }
