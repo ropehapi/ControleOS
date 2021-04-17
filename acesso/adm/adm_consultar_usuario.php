@@ -7,10 +7,9 @@ if(isset($_POST['btnBuscar'])){
     $vo = new UsuarioVO;
     $ctrl = new UsuarioCTRL;
 
-    $nome = $_POST['nome'];
-    $vo->setBuscarNome($nome);
+    $vo->setBuscarNome($_POST['nome']);
 
-    $ret = $ctrl->PesquisarUsuario($vo);
+    $usuarios = $ctrl->ConsultarUsuarioCTRL($vo);
 }
 
 ?>
@@ -68,6 +67,8 @@ if(isset($_POST['btnBuscar'])){
                         </div>
 
                         <button onclick="return ValidarTela(3)" name="btnBuscar" class="btn btn-success">Buscar</button>
+
+                        <?php if (isset($usuarios)) { ?>
                         </form>
                         <div class="row">
                             <div class="col-12">
@@ -78,11 +79,9 @@ if(isset($_POST['btnBuscar'])){
                                         <div class="card-tools">
                                             <div class="input-group input-group-sm" style="width: 150px;">
                                                 <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
                                                 <div class="input-group-append">
                                                     <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
                                                 </div>
-                                                
                                             </div>
                                         </div>
                                     </div>
@@ -92,19 +91,21 @@ if(isset($_POST['btnBuscar'])){
                                             <thead>
                                                 <tr>
                                                     <th>Nome</th>
-                                                    <th>Setor</th>
+                                                    <th>Tipo</th>
                                                     <th>Ação</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                            <?php for($i=0;$i<count($usuarios);$i++) {?>
                                                 <tr>
-                                                    <td>(Nome)</td>
-                                                    <td>(Setor)</td>
+                                                    <td><?= $usuarios[$i]['nome_usuario'] ?></td>
+                                                    <td><?= $usuarios[$i]['tipo_usuario'] ?></td>
                                                     <td>
                                                         <a  class="btn btn-warning btn-xs">Alterar</a>
                                                         <a href="#" class="btn btn-danger btn-xs">Excluir</a>
                                                     </td>
                                                 </tr>
+                                                <?php } ?>
                                             </tbody>
                                         </table>
                                     </div>
@@ -114,6 +115,7 @@ if(isset($_POST['btnBuscar'])){
                             </div>
                         </div>
                     </div>
+                    <?php } ?>
 
                 </div>
                 <div>
@@ -122,7 +124,7 @@ if(isset($_POST['btnBuscar'])){
 
                     </div>
                     <div class="form-group">
-                        < </div> <hr>
+                         </div> <hr>
 
                     </div>
                     <!-- /.card-body -->
