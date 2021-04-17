@@ -142,7 +142,8 @@ $setores = $setorCTRL->ConsultarSetorCTRL();
                             <div id="divTipo23" style="display: none;">
                             <div class="form-group">
                                 <label>Email</label>
-                                <input id="email" name="email" type="text" class="form-control" placeholder="Digite aqui">
+                                <input id="email" name="email" onchange="ValidarEmailCadastro(this.value)" type="text" class="form-control" placeholder="Digite aqui">
+                                <label id="val_email" style="color: red; display: none;"></label>
                             </div>
 
                             <div class="form-group">

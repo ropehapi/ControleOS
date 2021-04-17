@@ -124,10 +124,23 @@ class UsuarioDAO extends Conexao{
 
     public function VerificarCpfCadastro($cpf){
         $conexao = parent::retornaConexao();
-        $comando = 'select count(cpf_usuario) from tb_usuario where cpf_usuario = ?';
+        $comando = 'select count(cpf_usuario) as contar from tb_usuario where cpf_usuario = ?';
         $sql = new PDOStatement;
         $sql = $conexao->prepare($comando);
         $sql->bindValue(1,$cpf);
+        $sql->setFetchMode(PDO::FETCH_ASSOC);
+        $sql->execute();
+        $result = $sql->fetchAll();
+
+        return $result[0]['contar'];
+    }
+
+    public function VerificarEmailCadastro($email){
+        $conexao = parent::retornaConexao();
+        $comando = 'select count(email_usuario) as contar from tb_usuario where email_usuario = ?';
+        $sql = new PDOStatement;
+        $sql = $conexao->prepare($comando);
+        $sql->bindValue(1,$email);
         $sql->setFetchMode(PDO::FETCH_ASSOC);
         $sql->execute();
         $result = $sql->fetchAll();

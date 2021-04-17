@@ -34,11 +34,11 @@ function MostrarTipoUsuario(tipo) {
 
 function ValidarCpfCadastro(cpf) {
     if (cpf.trim() != '') {
-        $.post('ajax/verificar_cpf_duplicado.php',
+        $.post("ajax/verificar_cpf_duplicado.php",
             { cpf_user: cpf }, function (retorno) {
                 if (retorno == 1) {
+                    $("#cpf").val('');
                     $("#val_cpf").html('O CPF: ' + cpf + ', já existe');
-                    $("#val_cpf").val('');
                     $("#val_cpf").show();
                 } else {
                     $("#val_cpf").hide();
@@ -48,17 +48,58 @@ function ValidarCpfCadastro(cpf) {
     }
 }
 
+function ValidarEmailCadastro(email) {
+    if (email.trim() != '') {
+        $.post("ajax/verificar_email_duplicado.php",
+            { email_user: email }, function (retorno) {
+                if (retorno == 1) {
+                    $("#email").val('');
+                    $("#val_email").html('O email: ' + email + ', já existe');
+                    $("#val_email").show();
+                } else {
+                    $("#val_email").hide();
+                }
+            }
+        );
+    }
+}
+
+function InserirTipo(nome) {
+    var nome = $("#nome").val().trim();
+
+    if (ValidarTela(8)) {
+        $.post("ajax/tipo_equipamento_ajax.php",
+            {
+                nome_tipo: nome,
+                acao: 'I'
+            }, function (retorno_chamada) {
+                $("#nome").val();
+                toastr.success(RetornaMsg(1));
+
+                $.post("ajax/tipo_equipamento_ajax.php",
+                    {
+                        acao: 'C'
+                    }, function (retorno_chamada) {
+                        $("#tabTipos").html(retorno_chamada)
+                    });
+            });
+
+
+    }
+    return false;
+}
+
 function InserirModelo() {
     var nome = $("#nome").val().trim();
     if (ValidarTela(4)) {
         $.post("ajax/modelo_equipamento_ajax.php",
-        {
-            nome_modelo: nome,
-            acao: 'I'
-        },function (retorno_chamada){
-            $("#nome").val('');
-            toastr.success(RetornaMsg(1));
-        });
+            {
+                nome_modelo: nome,
+                acao: 'I'
+            }, function (retorno_chamada) {
+                $("#nome").val('');
+                toastr.success(RetornaMsg(1));
+            });
     }
 
     return false;

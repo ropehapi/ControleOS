@@ -52,5 +52,10 @@ class UsuarioCTRL{
         return $dao->VerificarCpfCadastro($cpf);
     }
 
+    public function VerificarEmailCadastro($email){
+        $dao = new UsuarioDAO;
+        return $dao->VerificarEmailCadastro($email);
+    }
+
     
 }

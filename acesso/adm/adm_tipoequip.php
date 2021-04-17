@@ -81,7 +81,7 @@ $tipos = $ctrl->ConsultarTipoCTRL();
                                 <label>Nome do tipo</label>
                                 <input id="nome" name="nome" type="text" class="form-control" placeholder="Digite aqui">
                             </div>
-                            <button onclick="return ValidarTela(8)" name="btnGravar" class="btn btn-success">Gravar</button>
+                            <button onclick="return InserirTipo()" name="btnGravar" class="btn btn-success">Gravar</button>
                     </form>
                     <hr>
 
@@ -103,7 +103,7 @@ $tipos = $ctrl->ConsultarTipoCTRL();
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body table-responsive p-0">
-                                    <table class="table table-bordered">
+                                    <table class="table table-bordered" id="tabTipos">
                                         <thead>
                                             <tr>
                                                 <th>Nome do tipo</th>

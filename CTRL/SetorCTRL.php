@@ -1,7 +1,7 @@
 <?php
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/ControleOs/DAO/SetorDAO.php';
-require_once '../CTRL/UtilCTRL.phpj';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/ControleOs/CTRL/UtilCTRL.php';
 class SetorCTRL
 {
 
