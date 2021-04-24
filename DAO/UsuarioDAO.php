@@ -148,7 +148,7 @@ class UsuarioDAO extends Conexao{
         return $result[0]['contar'];
     }
 
-    public function ConsultarUsuarioDAO($nomeUsuario){
+    public function FiltrarUsuarioDAO($nomeUsuario){
         $conexao = parent::retornaConexao();
         $comando =  'select id_usuario,nome_usuario,tipo_usuario from tb_usuario where nome_usuario like ?';
         $sql = new PDOStatement;

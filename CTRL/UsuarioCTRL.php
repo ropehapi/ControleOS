@@ -57,9 +57,9 @@ class UsuarioCTRL{
         return $dao->VerificarEmailCadastro($email);
     }
 
-    public function ConsultarUsuarioCTRL(UsuarioVO $vo){       
+    public function FiltrarUsuarioCTRL($nomeFiltro){       
         $dao = new UsuarioDAO;
-        return $dao->ConsultarUsuarioDAO($vo->getBuscarNome());
+        return $dao->FiltrarUsuarioDAO($nomeFiltro);
     }
     
 }

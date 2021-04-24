@@ -1,15 +1,18 @@
 <?php
 
 require_once '../../CTRL/UsuarioCTRL.php';
+require_once '../../CTRL/UtilCTRL.php';
 require_once '../../VO/UsuarioVo.php';
 
-if(isset($_POST['btnBuscar'])){
-    $vo = new UsuarioVO;
+$util = new UtilCTRL();
+
+$nomeFiltro = '';
+
+if(isset($_POST['btnFiltrar'])){
+    $nomeFiltro = $_POST['nomeFiltro'];
     $ctrl = new UsuarioCTRL;
 
-    $vo->setBuscarNome($_POST['nome']);
-
-    $usuarios = $ctrl->ConsultarUsuarioCTRL($vo);
+    $usuarios = $ctrl->FiltrarUsuarioCTRL($nomeFiltro);
 }
 
 ?>
@@ -63,10 +66,10 @@ if(isset($_POST['btnBuscar'])){
                         <div class="form-group">
                             <label>Pesquisar por Nome</label>
                             <form method="POST" action="adm_consultar_usuario.php">
-                            <input id="nome" type="text" name="nome" class="form-control" placeholder="Digite aqui">
+                            <input id="nome" type="text" value="<?= $nomeFiltro ?>" name="nomeFiltro" class="form-control" placeholder="Digite aqui">
                         </div>
 
-                        <button onclick="return ValidarTela(3)" name="btnBuscar" class="btn btn-success">Buscar</button>
+                        <button onclick="return ValidarTela(3)" name="btnFiltrar" class="btn btn-success">Buscar</button>
 
                         <?php if (isset($usuarios)) { ?>
                         </form>
@@ -99,7 +102,7 @@ if(isset($_POST['btnBuscar'])){
                                             <?php for($i=0;$i<count($usuarios);$i++) {?>
                                                 <tr>
                                                     <td><?= $usuarios[$i]['nome_usuario'] ?></td>
-                                                    <td><?= $usuarios[$i]['tipo_usuario'] ?></td>
+                                                    <td><?= $util::MostrarTipoUser($usuarios[$i]['tipo_usuario'])?></td>
                                                     <td>
                                                         <a  class="btn btn-warning btn-xs">Alterar</a>
                                                         <a href="#" class="btn btn-danger btn-xs">Excluir</a>

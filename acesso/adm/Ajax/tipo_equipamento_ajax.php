@@ -3,17 +3,18 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/ControleOs/CTRL/TipoCTRL.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/ControleOs/VO/TipoVO.php';
 
+$ctrl = new TipoCTRL;
+
 if (isset($_POST['nome_tipo']) && $_POST['acao'] == 'I') {
 
     $vo = new TipoVo;
-    $ctrl = new TipoCTRL;
 
     $nome = $_POST['nome_tipo'];
     $vo->setNomeTipo($nome);
 
     $ret = $ctrl->InserirTipoCTRL($vo);
 } elseif (isset($_POST['acao']) && $_POST['acao'] == 'C') {
-    $tipo = $ctrl->ConsultarTipoCTRL();
+    $tipos = $ctrl->ConsultarTipoCTRL();
 ?>
     <table class="table table-bordered" id="tabTipos">
         <thead>
