@@ -169,14 +169,23 @@ class UsuarioDAO extends Conexao
     public function DetalharUsuario($id)
     {
         $conexao = parent::retornaConexao();
-        $comando = 'select * from tb_usuario where id_usuario = ?';
-        $sql = $conexao->prepare($comando);
-        $sql->bindValue(1, $id);
-        try {
-            $sql->execute();
-        } catch (Exception $ex) {
-            echo $ex->getMessage();
-        }
+        $comando = 'select usu.id_usuario,
+                           usu.nome_usuario,
+                           usu.tipo_usuario,
+                           usu.cpf_usuario,
+                           tec.tel_tec,
+                           tec.email_tec,
+                           tec.endereco_tec,
+                           fun.id_setor,
+                           fun.tel_func,
+                           fun_endereco_func
+                      from tb_usuario as usu
+                      left join tb_funcionario as fun
+                      on usu.id_usuario = fun.id_usuario_func
+                      left join tb_tecnico as tec
+                      on usu.id_usuario = tec.id_usuario-tec
+                      where usu.id_usuario = ? ';
+        
     }
 
     public function ExcluirUsuario($idUsuario, $tipo)
