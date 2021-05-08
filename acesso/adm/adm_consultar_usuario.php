@@ -13,6 +13,13 @@ if(isset($_POST['btnFiltrar'])){
     $ctrl = new UsuarioCTRL;
 
     $usuarios = $ctrl->FiltrarUsuarioCTRL($nomeFiltro);
+}else if(isset($_POST['btnExcluir'])){
+    $valores = explode('-',$_POST['cod_item']);
+    $cod = $valores[0];
+    $tipo = $valores[1];
+
+    $ctrl = new UsuarioCTRL;
+    $ret = $ctrl->ExcluirUsuarioCTRL($cod,$tipo);
 }
 
 ?>
@@ -105,12 +112,17 @@ if(isset($_POST['btnFiltrar'])){
                                                     <td><?= $util::MostrarTipoUser($usuarios[$i]['tipo_usuario'])?></td>
                                                     <td>
                                                         <a  class="btn btn-warning btn-xs">Alterar</a>
-                                                        <a href="#" class="btn btn-danger btn-xs">Excluir</a>
+                                                        <a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal-excluir" onclick="CarregarDadosExcluir('<?= $usuarios[$i]['id_usuario'] . '-' . $usuarios[$i]['tipo_usuario'] ?>','<?= $usuarios[$i]['nome_usuario'] ?>')">Excluir</a>
                                                     </td>
                                                 </tr>
                                                 <?php } ?>
                                             </tbody>
                                         </table>
+                                        <form method="post" action="adm_consultar_usuario.php">
+                                            <?php
+                                            include_once '../../template/_modal_excluir.php';
+                                            ?>
+                                        </form>
                                     </div>
                                     <!-- /.card-body -->
                                 </div>
@@ -120,21 +132,8 @@ if(isset($_POST['btnFiltrar'])){
                     </div>
                     <?php } ?>
 
-                </div>
-                <div>
-                    <div class="form-group">
-
-
-                    </div>
-                    <div class="form-group">
-                         </div> <hr>
-
-                    </div>
-                    <!-- /.card-body -->
-                    <!-- /.card-footer-->
-                </div>
+                </div>  
                 <!-- /.card -->
-
             </section>
             <!-- /.content -->
         </div>

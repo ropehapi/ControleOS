@@ -62,4 +62,8 @@ class UsuarioCTRL{
         return $dao->FiltrarUsuarioDAO($nomeFiltro);
     }
     
+    public function ExcluirUsuarioCTRL($idUsuario,$tipo){
+        $dao = new UsuarioDAO;
+        return $dao->ExcluirUsuario($idUsuario,$tipo);
+    }
 }
