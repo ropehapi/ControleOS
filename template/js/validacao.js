@@ -134,6 +134,12 @@ function ValidarTela(tela){
             }
 
             break;
+
+        case 19:
+            if($("#cpf").val().trim() == '' || $("#pass").val().trim()==''){
+                toastr.warning(RetornaMsg(0));
+                return false;
+            }
     }
 
     

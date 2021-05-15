@@ -366,4 +366,20 @@ class UsuarioDAO extends Conexao
             return -1;
         }
     }
+
+    public function ValidarLogin($cpf,$senha){
+        $comando = 'select * from tb_usuario where cpf_usuario = ? and senha_usuario = ?';
+        $this->sql = $this->conexao->prepare($comando);
+        $i = 1;
+        $this->sql->bindValue($i++,$cpf);
+        $this->sql->bindValue($i++,$senha);
+        $this->sql->setFetchMode(PDO::FETCH_ASSOC);
+        
+        try{
+            $this->sql->execute();
+            return $this->sql->fetchAll();
+        }catch(Exception $ex){
+            return -1;
+        }   
+    }
 }
