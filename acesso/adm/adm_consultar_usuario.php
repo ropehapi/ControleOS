@@ -79,7 +79,7 @@ if(isset($_POST['btnFiltrar'])){
                         <button onclick="return ValidarTela(3)" name="btnFiltrar" class="btn btn-success">Buscar</button>
 
                         <?php if (isset($usuarios)) { ?>
-                        </form>
+                        
                         <div class="row">
                             <div class="col-12">
                                 <div class="card">
@@ -111,7 +111,7 @@ if(isset($_POST['btnFiltrar'])){
                                                     <td><?= $usuarios[$i]['nome_usuario'] ?></td>
                                                     <td><?= $util::MostrarTipoUser($usuarios[$i]['tipo_usuario'])?></td>
                                                     <td>
-                                                        <a href="adm_usuario_alterar.php?cod<?= $usuarios[$i]['id_usuario'] ?>" class="btn btn-warning btn-xs">Alterar</a>
+                                                        <a href="adm_usuario_alterar.php?cod=<?= $usuarios[$i]['id_usuario'] ?>" class="btn btn-warning btn-xs">Alterar</a>
                                                         <a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal-excluir" onclick="CarregarDadosExcluir('<?= $usuarios[$i]['id_usuario'] . '-' . $usuarios[$i]['tipo_usuario'] ?>','<?= $usuarios[$i]['nome_usuario'] ?>')">Excluir</a>
                                                     </td>
                                                 </tr>

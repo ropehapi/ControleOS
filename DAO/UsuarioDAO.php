@@ -62,9 +62,9 @@ class UsuarioDAO extends Conexao
             $comando = 'insert into tb_funcionario (
                 id_usuario_fun,
                 id_setor,
-                email_fun,
-                tel_fun,
-                endereco_fun
+                email_func,
+                tel_func,
+                endereco_func
             )
             values(?,?,?,?,?)';
             $this->sql = $this->conexao->prepare($comando);
@@ -81,7 +81,7 @@ class UsuarioDAO extends Conexao
             return 1;
         } catch (Exception $ex) {
             //Cancela a transação
-            $ex->getMessage();
+            echo $ex->getMessage();
             $this->conexao->rollBack();
             return -1;
         }
@@ -186,9 +186,9 @@ class UsuarioDAO extends Conexao
                            fun.email_func
                       from tb_usuario as usu
                       left join tb_funcionario as fun
-                      on usu.id_usuario = fun.id_usuario_func
+                      on usu.id_usuario = fun.id_usuario_fun
                       left join tb_tecnico as tec
-                      on usu.id_usuario = tec.id_usuario-tec
+                      on usu.id_usuario = tec.id_usuario_tec
                       where usu.id_usuario = ? ';
         $this->sql = $this->conexao->prepare($comando);
         $this->sql->bindValue(1,$id);
@@ -254,6 +254,116 @@ class UsuarioDAO extends Conexao
 
                 }
                 break;
+        }
+    }
+
+    public function AlterarUserTec(TecnicoVO $vo){
+        
+        $comando_sql = 'update tb_usuario
+                        set nome_usuario = ?, 
+                            cpf_usuario = ?
+                        where id_usuario = ?';
+
+        $this->sql = $this->conexao->prepare($comando_sql);
+        $i=1;
+        $this->sql->bindValue($i++, $vo->getNome());
+        $this->sql->bindValue($i++, $vo->getCPF());
+        $this->sql->bindValue($i++, $vo->getUserId());
+
+        $this->conexao->beginTransaction();
+
+        try{
+            $this->sql->execute();
+
+            $comando_sql = 'update tb_tecnico
+                                set email_tec = ?,
+                                    tel_tec = ?,
+                                    endereco_tec = ?
+                                where id_usuario_tec = ?';
+            
+            $this->sql = $this->conexao->prepare($comando_sql);
+
+            $i=1;
+            $this->sql->bindValue($i++, $vo->getEmailTec());
+            $this->sql->bindValue($i++, $vo->getTelTec());
+            $this->sql->bindValue($i++, $vo->getEnderecoTec());
+            $this->sql->bindValue($i++, $vo->getUserId());
+
+            $this->sql->execute();
+            $this->conexao->commit();
+
+            return 1; 
+
+        }catch (Exception $ex){
+            $this->conexao->rollBack();
+            return -1;
+        }
+    }
+
+    public function AlterarUserFun(FuncionarioVO $vo){
+        
+        $comando_sql = 'update tb_usuario
+                        set nome_usuario = ?, 
+                            cpf_usuario = ?
+                        where id_usuario = ?';
+
+        $this->sql = $this->conexao->prepare($comando_sql);
+        $i=1;
+        $this->sql->bindValue($i++, $vo->getNome());
+        $this->sql->bindValue($i++, $vo->getCPF());
+        $this->sql->bindValue($i++, $vo->getUserId());
+
+        $this->conexao->beginTransaction();
+
+        try{
+            $this->sql->execute();
+
+            $comando_sql = 'update tb_funcionario
+                                set email_func = ?,
+                                    tel_func = ?,
+                                    endereco_func = ?,
+                                    id_setor = ?
+                                where id_usuario_fun = ?';
+            
+            $this->sql = $this->conexao->prepare($comando_sql);
+
+            $i=1;
+            $this->sql->bindValue($i++, $vo->getEmailFunc());
+            $this->sql->bindValue($i++, $vo->getTelFunc());
+            $this->sql->bindValue($i++, $vo->getEnderecoFunc());
+            $this->sql->bindValue($i++, $vo->getIdSetor());
+            $this->sql->bindValue($i++, $vo->getUserId());
+
+            $this->sql->execute();
+            $this->conexao->commit();
+
+            return 1; 
+
+        }catch (Exception $ex){
+            $this->conexao->rollBack();
+            return -1;
+        }
+    }
+
+    public function AlterarUserAdm(UsuarioVO $vo){
+
+        $comando_sql = 'update tb_usuario
+                        set nome_usuario = ?, 
+                            cpf_usuario = ?
+                        where id_usuario = ?';
+
+        $this->sql = $this->conexao->prepare($comando_sql);
+        $i=1;
+        $this->sql->bindValue($i++, $vo->getNome());
+        $this->sql->bindValue($i++, $vo->getCPF());
+        $this->sql->bindValue($i++, $vo->getUserId());
+
+        try{
+            $this->sql->execute();
+            return 1;
+        }catch (Exception $ex){
+            parent::GravarErro($ex->getMessage(), $vo->getUserId(), Alterar);
+            return -1;
         }
     }
 }

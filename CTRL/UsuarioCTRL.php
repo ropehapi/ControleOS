@@ -21,6 +21,9 @@ class UsuarioCTRL{
             return 0;
         }
 
+        $vo->setDtCad(UtilCTRL::DataAtual());
+        $vo->setStatus(1);
+        $vo->setSenha(UtilCTRL::RetornaCriptografado($vo->getCpf()));
         $dao = new UsuarioDAO;
         return $dao->InserirTecDAO($vo);
     }
@@ -31,6 +34,9 @@ class UsuarioCTRL{
             return 0;
         }
 
+        $vo->setDtCad(UtilCTRL::DataAtual());
+        $vo->setStatus(1);
+        $vo->setSenha(UtilCTRL::RetornaCriptografado($vo->getCpf()));
         $dao = new UsuarioDAO;
         return $dao->InserirFuncDAO($vo);
     }
@@ -70,5 +76,36 @@ class UsuarioCTRL{
     public function DetalharUsuario($idUser){
         $dao = new UsuarioDAO;
         return $dao->DetalharUsuario($idUser);
+    }
+
+
+
+    public function AlterarUserFun(FuncionarioVO $vo)
+    {
+        if ($vo->getNome() == '' || $vo->getCPF() == '' || $vo->getEmailFunc() == '' || $vo->getTelFunc() == '' || $vo->getIdSetor() == '') {
+            return 0;
+        }
+
+        $dao = new UsuarioDAO();
+        return $dao->AlterarUserFun($vo);
+    }
+
+    public function AlterarUserTec(TecnicoVO $vo)
+    {
+        if ($vo->getNome() == '' || $vo->getCPF() == '' || $vo->getEmailTec() == '' || $vo->getTelTec() == '') {
+            return 0;
+        }
+        $dao = new UsuarioDAO();
+        return $dao->AlterarUserTec($vo);
+    }
+
+    public function AlterarUserADM(UsuarioVO $vo)
+    {
+        if ($vo->getNome() == '' || $vo->getCPF() == '') {
+            return 0;
+        }
+
+        $dao = new UsuarioDAO();
+        return $dao->AlterarUserAdm($vo);
     }
 }
