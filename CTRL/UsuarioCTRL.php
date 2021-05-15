@@ -66,4 +66,9 @@ class UsuarioCTRL{
         $dao = new UsuarioDAO;
         return $dao->ExcluirUsuario($idUsuario,$tipo);
     }
+
+    public function DetalharUsuario($idUser){
+        $dao = new UsuarioDAO;
+        return $dao->DetalharUsuario($idUser);
+    }
 }

@@ -6,7 +6,27 @@ require_once '../../VO/UsuarioVo.php';
 require_once '../../VO/TecnicoVo.php';
 require_once '../../VO/FuncionarioVo.php';
 
-if (isset($_POST['btnGravar'])) {
+//Testa a URL: se tem a chave e o valor é numérico
+if (isset($_GET['cod']) && is_numeric($_GET['cod'])) {
+
+    $ctrl = new UsuarioCTRL;
+    $dados = $ctrl->DetalharUsuario($_GET['cod']);
+
+    if (count($dados) == 0) {
+        header('location: adm_consultar_usuario.php');
+        exit;
+    } else {
+        if ($dados[0]['tipo_usuario'] == 2) {
+            $setorCTRL = new SetorCTRL;
+            $setores = $setorCTRL->ConsultarSetorCTRL();
+        }
+    }
+} else {
+    header('location: adm_consultar_usuario.php');
+    exit;
+}
+
+/*if (isset($_POST['btnGravar'])) {
 
     $ctrl = new UsuarioCTRL;
     $tipo = $_POST['tipo'];
@@ -24,21 +44,6 @@ if (isset($_POST['btnGravar'])) {
             break;
 
         case '2':
-            $vo = new FuncionarioVo;
-
-            $vo->setTipo($tipo);
-            $vo->setNome($_POST['nome']);
-            $vo->setCpf($_POST['cpf']);
-
-            $vo->setEnderecoFunc($_POST['endereco']);
-            $vo->setTelFunc($_POST['telefone']);
-            $vo->setEmailFunc($_POST['email']);
-            $vo->setIdSetor($_POST['setor']);
-
-            $ret = $ctrl->InserirUserFuncionario($vo);
-            break;
-
-        case '3':
             $vo = new TecnicoVO;
 
             $vo->setTipo($tipo);
@@ -52,8 +57,23 @@ if (isset($_POST['btnGravar'])) {
             $ret = $ctrl->InserirUserTecnico($vo);
 
             break;
+
+        case '3':
+            $vo = new FuncionarioVo;
+
+            $vo->setTipo($tipo);
+            $vo->setNome($_POST['nome']);
+            $vo->setCpf($_POST['cpf']);
+
+            $vo->setEnderecoFunc($_POST['endereco']);
+            $vo->setTelFunc($_POST['telefone']);
+            $vo->setEmailFunc($_POST['email']);
+            $vo->setIdSetor($_POST['setor']);
+
+            $ret = $ctrl->InserirUserFuncionario($vo);
+            break;
     }
-}
+}*/
 
 $setorCTRL = new SetorCTRL;
 $setores = $setorCTRL->ConsultarSetorCTRL();
@@ -106,56 +126,53 @@ $setores = $setorCTRL->ConsultarSetorCTRL();
                         <h3 class="card-title">Aqui você insere um novo usuário</h3>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="adm_usuario.php">
-                            <div class="form-group">
-                                <label>Tipo</label>
-                                <select id="tipo" name="tipo" class="form-control select2" style="width: 100%;" onchange="MostrarTipoUsuario(this.value)">
-                                    <option value="">Selecione</option>
-                                    <option value="1">Administrador</option>
-                                    <option value="2">Funcionário</option>
-                                    <option value="3">Técnico</option>
-                                </select>
-                            </div>
-                            <div id="divTipo123" style="display: none;">
-                                <div class="form-group">
-                                    <label>Nome</label>
-                                    <input id="nome" name="nome" type="text" class="form-control" placeholder="Digite aqui">
-                                </div>
+                        <form method="POST" action="adm_usuario_alterar.php">
+                            <input type="hidden" name="tipo" id="tipo" value="<?= $dados[0]['tipo_usuario'] ?>">
+                            <input type="hidden" name="cod" value="<?= $dados[0]['id_usuario'] ?>">
 
-                                <div class="form-group">
-                                    <label>CPF</label>
-                                    <input id="cpf" name="cpf" onchange="ValidarCpfCadastro(this.value)" type="text" class="form-control" placeholder="Digite aqui">
-                                    <label id="val_cpf" style="color:red; display:none"></label>
-                                </div>
+
+                            <div class="form-group">
+                                <label>Nome</label>
+                                <input value="<?= $dados[0]['nome_usuario'] ?>" id="nome" name="nome" type="text" class="form-control" placeholder="Digite aqui">
                             </div>
-                            <div id="divTipo2" style="display: none;">
+
+                            <div class="form-group">
+                                <label>CPF</label>
+                                <input value="<?= $dados[0]['cpf_usuario'] ?>" id="cpf" name="cpf" onchange="ValidarCpfCadastro(this.value)" type="text" class="form-control" placeholder="Digite aqui">
+                                <label id="val_cpf" style="color:red; display:none"></label>
+                            </div>
+
+                            <?php if ($dados[0]['tipo_usuario'] == 2) { ?>
+
                                 <div class="form-group">
                                     <label>Setor</label>
                                     <select id="setor" name="setor" class="form-control select2" style="width: 100%;">
                                         <option value="" selected="selected">Selecione</option>
                                         <?php for ($i = 0; $i < count($setores); $i++) { ?>
-                                            <option value="<?= $setores[$i]['id_setor'] ?>" selected="selected"><?= $setores[$i]['nome_setor'] ?></option>
+                                            <option value="<?= $setores[$i]['id_setor'] ?>" <?= $item['id_setor'] == $dados[0]['id_setor'] ? 'selected' : '' ?>><?= $setores[$i]['nome_setor'] ?></option>
                                         <?php } ?>
                                     </select>
                                 </div>
-                            </div>
-                            <div id="divTipo23" style="display: none;">
+
+                            <?php } ?>
+
+                            <?php if ($dados[0]['tipo_usuario'] == 2 || $dados[0]['tipo_usuario'] == 3) { ?>
                                 <div class="form-group">
                                     <label>Email</label>
-                                    <input id="email" name="email" onchange="ValidarEmailCadastro(this.value)" type="text" class="form-control" placeholder="Digite aqui">
+                                    <input id="email" value="<?=$dados[0]['tipo_usuario'] == 2 ? $dados[0]['email_func'] : $dados[0]['email_tec'] == 2 ?>" name="email" onchange="ValidarEmailCadastro(this.value)" type="text" class="form-control" placeholder="Digite aqui">
                                     <label id="val_email" style="color: red; display: none;"></label>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Telefone</label>
-                                    <input id="telefone" name="telefone" type="text" class="form-control" placeholder="Digite aqui">
+                                    <input id="telefone" value="<?=$dados[0]['tipo_usuario'] == 2 ? $dados[0]['tel_func'] : $dados[0]['tel_tec'] == 2 ?>" name="telefone" type="text" class="form-control" placeholder="Digite aqui">
                                 </div>
 
                                 <div class="form-group">
                                     <label>Endereço</label>
-                                    <input id="endereco" name="endereco" type="text" class="form-control" placeholder="Digite aqui">
+                                    <input id="endereco" value="<?=$dados[0]['tipo_usuario'] == 2 ? $dados[0]['endereco_func'] : $dados[0]['endereco_tec'] == 2 ?>" name="endereco" type="text" class="form-control" placeholder="Digite aqui">
                                 </div>
-                            </div>
+                            <?php } ?>
 
                             <button onclick="return ValidarTela(18)" id="btnGravar" style="display: none;" name="btnGravar" class="btn btn-success">Gravar</button>
                         </form>
