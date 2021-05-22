@@ -2,9 +2,11 @@
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/ControleOS/DAO/UsuarioDAO.php';
 
-class UsuarioCTRL{
-    public function InserirUserAdm(UsuarioVO $vo){
-        if($vo->getTipo()=='' || $vo->getNome()==''||$vo->getCpf()==''){
+class UsuarioCTRL
+{
+    public function InserirUserAdm(UsuarioVO $vo)
+    {
+        if ($vo->getTipo() == '' || $vo->getNome() == '' || $vo->getCpf() == '') {
             return 0;
         }
 
@@ -15,9 +17,12 @@ class UsuarioCTRL{
         return $dao->InserirUsuarioAdmDAO($vo);
     }
 
-    public function InserirUserTecnico(TecnicoVO $vo){
-        if($vo->getTipo()=='' || $vo->getNome()==''||$vo->getCpf()==''||
-           $vo->getEmailTec()==''||$vo->getTelTec()==''||$vo->getEnderecoTec()==''){
+    public function InserirUserTecnico(TecnicoVO $vo)
+    {
+        if (
+            $vo->getTipo() == '' || $vo->getNome() == '' || $vo->getCpf() == '' ||
+            $vo->getEmailTec() == '' || $vo->getTelTec() == '' || $vo->getEnderecoTec() == ''
+        ) {
             return 0;
         }
 
@@ -28,9 +33,12 @@ class UsuarioCTRL{
         return $dao->InserirTecDAO($vo);
     }
 
-    public function InserirUserFuncionario(FuncionarioVo $vo){
-        if($vo->getTipo()=='' || $vo->getNome()==''||$vo->getCpf()==''||
-           $vo->getEmailFunc()==''||$vo->getTelFunc()==''||$vo->getEnderecoFunc()==''){
+    public function InserirUserFuncionario(FuncionarioVo $vo)
+    {
+        if (
+            $vo->getTipo() == '' || $vo->getNome() == '' || $vo->getCpf() == '' ||
+            $vo->getEmailFunc() == '' || $vo->getTelFunc() == '' || $vo->getEnderecoFunc() == ''
+        ) {
             return 0;
         }
 
@@ -41,39 +49,46 @@ class UsuarioCTRL{
         return $dao->InserirFuncDAO($vo);
     }
 
-    public function PesquisarUsuario(UsuarioVO $vo){
-        if($vo->getBuscarNome()==''){
-            return 0;
-        }
-    }
-    
-    public function AlterarSenha(UsuarioVO $vo){
-        if($vo->getSenha()==''||$vo->getNovaSenha()==''||$vo->getrNovaSenha()==''){
+    public function PesquisarUsuario(UsuarioVO $vo)
+    {
+        if ($vo->getBuscarNome() == '') {
             return 0;
         }
     }
 
-    public function VerificarCpfCadastro($cpf){
+    public function AlterarSenha(UsuarioVO $vo)
+    {
+        if ($vo->getSenha() == '' || $vo->getNovaSenha() == '' || $vo->getrNovaSenha() == '') {
+            return 0;
+        }
+    }
+
+    public function VerificarCpfCadastro($cpf)
+    {
         $dao = new UsuarioDAO;
         return $dao->VerificarCpfCadastro($cpf);
     }
 
-    public function VerificarEmailCadastro($email){
+    public function VerificarEmailCadastro($email)
+    {
         $dao = new UsuarioDAO;
         return $dao->VerificarEmailCadastro($email);
     }
 
-    public function FiltrarUsuarioCTRL($nomeFiltro){       
+    public function FiltrarUsuarioCTRL($nomeFiltro)
+    {
         $dao = new UsuarioDAO;
         return $dao->FiltrarUsuarioDAO($nomeFiltro);
     }
-    
-    public function ExcluirUsuarioCTRL($idUsuario,$tipo){
+
+    public function ExcluirUsuarioCTRL($idUsuario, $tipo)
+    {
         $dao = new UsuarioDAO;
-        return $dao->ExcluirUsuario($idUsuario,$tipo);
+        return $dao->ExcluirUsuario($idUsuario, $tipo);
     }
 
-    public function DetalharUsuario($idUser){
+    public function DetalharUsuario($idUser)
+    {
         $dao = new UsuarioDAO;
         return $dao->DetalharUsuario($idUser);
     }
@@ -107,5 +122,48 @@ class UsuarioCTRL{
 
         $dao = new UsuarioDAO();
         return $dao->AlterarUserAdm($vo);
+    }
+
+    public function ValidarLogin($cpf, $senha)
+    {
+        if (trim($cpf) == '' || trim($senha) == '') {
+            return 0;
+        }
+
+        $dao = new UsuarioDAO;
+        $user = $dao->ValidarLogin($cpf);
+
+        //Verifica se encontrou o usuário
+        if (count($user) == 0) {
+            return 2;
+        }
+
+        $senha_hash = $user[0]['senha_usuario'];
+
+        //Verifica se a senha bate
+        if (password_verify($senha, $senha_hash)) {
+            UtilCTRL::CriarSessao(
+                $user[0]['id_usuario'],
+                $user[0]['tipo_usuario'],
+                $user[0]['id_setor']
+            );
+
+            switch ($user[0]['tipo_usuario']) {
+                case '1':
+                    header('http://localhost/ControleOS/acesso/adm/adm_usuario.php');
+                    exit;
+                    break;
+                case '2':
+                    header('http://localhost/ControleOS/acesso/funcionario/func_meus_dados.php');
+                    exit;
+                    break;
+                case '3':
+                    header('http://localhost/ControleOS/acesso/tecnico/tec_chamados.php');
+                    exit;
+                    break;
+            }
+        } else {
+            return 2;
+        }
     }
 }

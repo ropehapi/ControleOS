@@ -2,10 +2,53 @@
 
 class UtilCTRL
 {
+    private static function IniciarSessao(){
+        if(!isset($_SESSION)){
+            session_start();
+        }
+    }
+
+    public function Deslogar(){
+        self::IniciarSessao();
+
+        unset($_SESSION['cod']);
+        unset($_SESSION['tipo']);
+        unset($_SESSION['setor']);
+
+        self::VoltarPaginaLogin();
+    }
+
+    public static function VerificarLogado(){
+        if(!isset($_SESSION['cod'])||$_SESSION['cod']==''){
+            self::VoltarPaginaLogin();
+        }
+    }
+
+    public static function VoltarPaginaLogin(){
+        header('http://localhost/ControleOS/acesso/login/acessar.php');
+        exit;
+    }
+
+    public static function CriarSessao($id,$tipo,$idSetor){
+        self::IniciarSessao();
+        $_SESSION['cod'] = $id;
+        $_SESSION['tipo'] = $tipo;
+        $_SESSION['setor'] = $idSetor;
+    }
 
     public static function CodigoUserLogado()
     {
-        return 1;
+        return $_SESSION['cod'];
+    }
+
+    public static function TipoUserLogado()
+    {
+        return $_SESSION['tipo'];
+    }
+
+    public static function SetorUserLogado()
+    {
+        return $_SESSION['setor'];
     }
 
     public static function SetarFusoHorario()

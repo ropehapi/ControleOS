@@ -1,9 +1,9 @@
-function RetornaMsg(num){
+function RetornaMsg(num) {
     var msg = '';
-    switch(num){
+    switch (num) {
         case -2:
             msg = 'Não foi possível excluir o registro pois está em uso';
-            break;    
+            break;
         case -1:
             msg = 'Ocorreu um erro na operação , tente novamente mais tarde';
             break;
@@ -12,7 +12,10 @@ function RetornaMsg(num){
             break;
         case 1:
             msg = 'Ação realizada com sucesso';
-            break;    
+            break;
+        case 2:
+            msg = 'Usuário não encontrado';
+            break;
     }
 
     return msg;

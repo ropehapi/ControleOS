@@ -367,19 +367,22 @@ class UsuarioDAO extends Conexao
         }
     }
 
-    public function ValidarLogin($cpf,$senha){
-        $comando = 'select * from tb_usuario where cpf_usuario = ? and senha_usuario = ?';
+    public function ValidarLogin($cpf){
+        $comando = 'select usu.id_usuario,
+                            usu.tipo_usuario,
+                            usu.senha_usuario,
+                            fu.id_setor
+                        from tb_usuario as usu
+                        left join tb_funcoinario as fu
+                        on usu.id_usuario = fu.id_usuario_fun
+                        where usu.cpf_usuario = ? and usu.status_usuario = ?';
         $this->sql = $this->conexao->prepare($comando);
-        $i = 1;
-        $this->sql->bindValue($i++,$cpf);
-        $this->sql->bindValue($i++,$senha);
         $this->sql->setFetchMode(PDO::FETCH_ASSOC);
+        $this->sql->bindValue(1,$cpf);
+        $this->sql->bindValue(2,1);
+        $this->sql->execute();
+
+        return $this->sql->fetchAll();
         
-        try{
-            $this->sql->execute();
-            return $this->sql->fetchAll();
-        }catch(Exception $ex){
-            return -1;
-        }   
     }
 }
