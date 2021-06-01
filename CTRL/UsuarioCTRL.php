@@ -91,7 +91,7 @@ class UsuarioCTRL
     public function DetalharUsuario($idUser)
     {
         $dao = new UsuarioDAO;
-        return $dao->DetalharUsuario($idUser);
+        return $dao->DetalharUsuario($idUser == '' ? UtilCTRL::CodigoUserLogado() : $idUser);
     }
 
 
@@ -151,15 +151,15 @@ class UsuarioCTRL
 
             switch ($user[0]['tipo_usuario']) {
                 case '1':
-                    header('http://localhost/ControleOS/acesso/adm/adm_usuario.php');
+                    header('location: http://localhost/ControleOS/acesso/adm/adm_usuario.php');
                     exit;
                     break;
                 case '2':
-                    header('http://localhost/ControleOS/acesso/funcionario/func_meus_dados.php');
+                    header('location: http://localhost/ControleOS/acesso/funcionario/func_meus_dados.php');
                     exit;
                     break;
                 case '3':
-                    header('http://localhost/ControleOS/acesso/tecnico/tec_chamados.php');
+                    header('location: http://localhost/ControleOS/acesso/tecnico/tec_meus_dados.php');
                     exit;
                     break;
             }

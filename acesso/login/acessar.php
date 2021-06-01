@@ -8,12 +8,14 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/ControleOS/CTRL/UsuarioCTRL.php';
     $ret = $ctrl->ValidarLogin($_POST['cpf'],$_POST['pass']);
 
   }
-
-
+  
 ?>
 <!DOCTYPE html>
 <html>
-<?php include_once '../../template/_head.php'; ?>
+<?php
+ include_once '../../template/_head.php';
+  include_once '../../template/_msg.php';
+?>
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">

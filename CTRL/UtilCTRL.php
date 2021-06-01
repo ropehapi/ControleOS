@@ -8,7 +8,14 @@ class UtilCTRL
         }
     }
 
-    public function Deslogar(){
+    public static function CriarSessao($id,$tipo,$idSetor){
+        self::IniciarSessao();
+        $_SESSION['cod'] = $id;
+        $_SESSION['tipo'] = $tipo;
+        $_SESSION['setor'] = $idSetor;
+    }
+
+    public static function Deslogar(){
         self::IniciarSessao();
 
         unset($_SESSION['cod']);
@@ -29,25 +36,21 @@ class UtilCTRL
         exit;
     }
 
-    public static function CriarSessao($id,$tipo,$idSetor){
-        self::IniciarSessao();
-        $_SESSION['cod'] = $id;
-        $_SESSION['tipo'] = $tipo;
-        $_SESSION['setor'] = $idSetor;
-    }
-
     public static function CodigoUserLogado()
     {
+        self::IniciarSessao();
         return $_SESSION['cod'];
     }
 
     public static function TipoUserLogado()
     {
+        self::IniciarSessao();
         return $_SESSION['tipo'];
     }
 
     public static function SetorUserLogado()
     {
+        self::IniciarSessao();
         return $_SESSION['setor'];
     }
 

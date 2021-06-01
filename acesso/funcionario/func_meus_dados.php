@@ -1,11 +1,13 @@
 <?php
 
-require_once '../../CTRL/FuncionarioCTRL.php';
+require_once '../../CTRL/UsuarioCTRL.php';
 require_once '../../VO/FuncionarioVo.php';
+require_once '../../CTRL/UtilCTRL.php';
 
-if(isset($_POST['btnGravar'])){
+$ctrl = new UsuarioCTRL;
+
+if (isset($_POST['btnGravar'])) {
     $vo = new FuncionarioVO;
-    $ctrl = new FuncionarioCTRL;
 
     $nome = $_POST['nome'];
     $email = $_POST['email'];
@@ -17,9 +19,10 @@ if(isset($_POST['btnGravar'])){
     $vo->setTelFunc($telefone);
     $vo->setEnderecoFunc($endereco);
 
-    $ret = $ctrl->AlterarInformacoes($vo);
+    $ret = $ctrl->AlterarUserFun($vo);
 }
 
+$dados = $ctrl->DetalharUsuario('');
 
 ?>
 <!DOCTYPE html>
@@ -68,28 +71,28 @@ if(isset($_POST['btnGravar'])){
                         <h3 class="card-title">Mantenha seus dados atualizados aqui</h3>
                     </div>
                     <div class="card-body">
-                    <form method="POST" action="func_meus_dados.php">
-                        <div class="form-group">
-                            <label>Nome</label>
-                            <input id="nome" name="nome" type="text" class="form-control" placeholder="Digite aqui">
-                        </div>
+                        <form method="POST" action="func_meus_dados.php">
+                            <div class="form-group">
+                                <label>Nome</label>
+                                <input id="nome" value="<?= $dados[0]['nome_usuario'] ?>" name="nome" type="text" class="form-control" placeholder="Digite aqui">
+                            </div>
 
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input id="email" name="email" type="text" class="form-control" placeholder="Digite aqui">
-                        </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input id="email" value="<?= $dados[0]['email_func'] ?>" name="email" type="text" class="form-control" placeholder="Digite aqui">
+                            </div>
 
-                        <div class="form-group">
-                            <label>Telefone</label>
-                            <input id="telefone" name="telefone" type="text" class="form-control" placeholder="Digite aqui">
-                        </div>
+                            <div class="form-group">
+                                <label>Telefone</label>
+                                <input id="telefone" value="<?= $dados[0]['tel_func'] ?>" name="telefone" type="text" class="form-control" placeholder="Digite aqui">
+                            </div>
 
-                        <div class="form-group">
-                            <label>Endereço</label>
-                            <input id="enrereco" name="endereco" type="text" class="form-control" placeholder="Digite aqui">
-                        </div>
+                            <div class="form-group">
+                                <label>Endereço</label>
+                                <input id="enrereco" value="<?= $dados[0]['endereco_func'] ?>" name="endereco" type="text" class="form-control" placeholder="Digite aqui">
+                            </div>
 
-                        <button name="btnGravar" onclick="return ValidarTela(12)" class="btn btn-success">Gravar</button>
+                            <button name="btnGravar" onclick="return ValidarTela(12)" class="btn btn-success">Alterar</button>
                         </form>
                     </div>
 
@@ -100,24 +103,25 @@ if(isset($_POST['btnGravar'])){
 
                     </div>
                     <div class="form-group">
-                        < </div> <hr>
-
                     </div>
-                    <!-- /.card-body -->
-                    <!-- /.card-footer-->
+                    <hr>
+
                 </div>
-                <!-- /.card -->
-
-            </section>
-            <!-- /.content -->
+                <!-- /.card-body -->
+                <!-- /.card-footer-->
         </div>
-        <!-- /.content-wrapper -->
+        <!-- /.card -->
+
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
 
 
-        <?php
-        include_once '../../template/_footer.php';
-        include_once '../../template/_msg.php';
-        ?>
+    <?php
+    include_once '../../template/_footer.php';
+    include_once '../../template/_msg.php';
+    ?>
     </div>
     <!-- ./wrapper -->
 
