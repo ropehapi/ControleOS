@@ -373,7 +373,7 @@ class UsuarioDAO extends Conexao
                             usu.senha_usuario,
                             fu.id_setor
                         from tb_usuario as usu
-                        left join tb_funcoinario as fu
+                        left join tb_funcionario as fu
                         on usu.id_usuario = fu.id_usuario_fun
                         where usu.cpf_usuario = ? and usu.status_usuario = ?';
         $this->sql = $this->conexao->prepare($comando);

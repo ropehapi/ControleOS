@@ -1,4 +1,16 @@
+<?php 
 
+require_once $_SERVER['DOCUMENT_ROOT'] . '/ControleOS/CTRL/UsuarioCTRL.php';
+
+  if(isset($_POST['btnAcessar'])){
+
+    $ctrl = new UsuarioCTRL;
+    $ret = $ctrl->ValidarLogin($_POST['cpf'],$_POST['pass']);
+
+  }
+
+
+?>
 <!DOCTYPE html>
 <html>
 <?php include_once '../../template/_head.php'; ?>
@@ -12,15 +24,17 @@
     <div class="card-body login-card-body">
       <p class="login-box-msg">Faça login para iniciar a sua sessão</p>
 
-      <form action="../../template/index3.html" method="post">
+      <form action="acessar.php" method="post">
+
         <div class="input-group mb-3">
-          <input type="email" class="form-control" name="cpf" id="cpf" placeholder="CPF">
+          <input class="form-control" name="cpf" id="cpf" placeholder="CPF">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
             </div>
           </div>
         </div>
+
         <div class="input-group mb-3">
           <input type="password" class="form-control" id="pass" name="pass" placeholder="Digite sua senha">
           <div class="input-group-append">
@@ -29,10 +43,11 @@
             </div>
           </div>
         </div>
+
         <div class="row">
           <!-- /.col -->
           <div class="col-4">
-            <button onclick="return ValidarTela(19)" class="btn btn-primary btn-block">Entrar</button>
+            <button name="btnAcessar" onclick="return ValidarTela(19)" class="btn btn-primary btn-block">Entrar</button>
           </div>
           <!-- /.col -->
         </div>

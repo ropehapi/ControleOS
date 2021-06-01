@@ -1,6 +1,7 @@
 <?php
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/ControleOS/DAO/UsuarioDAO.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/ControleOs/CTRL/UtilCTRL.php';
 
 class UsuarioCTRL
 {
