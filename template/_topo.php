@@ -1,4 +1,4 @@
-<?php session_start();
+<?php 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/ControleOS/CTRL/UtilCTRL.php';
 UtilCTRL::IniciarSessao();
 ?>

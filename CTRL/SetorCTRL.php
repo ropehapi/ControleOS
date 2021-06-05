@@ -1,7 +1,8 @@
 <?php
 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/ControleOs/DAO/SetorDAO.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/ControleOs/CTRL/UtilCTRL.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/ControleOS/DAO/SetorDAO.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/ControleOS/CTRL/UtilCTRL.php';
+
 class SetorCTRL
 {
 

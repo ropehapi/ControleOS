@@ -106,18 +106,21 @@ function InserirModelo() {
 }
 
 function ValidarSenhaAtual(senha_atual_digitado){
+    
     if(ValidarTela(20)){
-        $.post("ajax/verificar_senha_atual.php",
+        $.post('../adm/Ajax/verificar_senha_atual.php',
         {
             senha_atual:senha_atual_digitado
         },function(ret){
+            
             if(ret == 1){
-                $("#senhaPreenchida").show;
-                $("#divSenhaAtual").hide;
-                $("#btnValidar").hide;
+             
+                $("#divSenhaAtual").hide();
+                $("#btnValidar").hide();
+                $("#senhaPreenchida").show();
             }else{
-                $("#divSenhaAtual").show;
-                $("#senhaPreenchida").hide;
+                $("#divSenhaAtual").show();
+                $("#senhaPreenchida").hide();
                 ValidarTela(21);
             }
         });

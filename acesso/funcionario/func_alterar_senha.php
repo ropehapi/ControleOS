@@ -62,7 +62,7 @@ if (isset($_POST['btnAlterar'])) {
                                 <input id="senha_atual" name="senha_atual" type="password" class="form-control" placeholder="Digite aqui">
                             </div>
 
-                            <button name="btnValidar" id="btnValidar" onclick="ValidarSenhaAtual(document.getElementById('senha_atual').value)" class="btn btn-success">Validar</button>
+                            <button type="button" name="btnValidar" id="btnValidar" onclick="ValidarSenhaAtual(document.getElementById('senha_atual').value)" class="btn btn-success">Validar</button>
 
                             <div id="senhaPreenchida" style="display: none;">
                                 <div class="form-group">

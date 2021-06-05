@@ -62,9 +62,9 @@ class UsuarioDAO extends Conexao
             $comando = 'insert into tb_funcionario (
                 id_usuario_fun,
                 id_setor,
-                email_func,
-                tel_func,
-                endereco_func
+                email_fun,
+                tel_fun,
+                endereco_fun
             )
             values(?,?,?,?,?)';
             $this->sql = $this->conexao->prepare($comando);
@@ -181,9 +181,9 @@ class UsuarioDAO extends Conexao
                            tec.email_tec,
                            tec.endereco_tec,
                            fun.id_setor,
-                           fun.tel_func,
-                           fun.endereco_func,
-                           fun.email_func
+                           fun.tel_fun,
+                           fun.endereco_fun,
+                           fun.email_fun
                       from tb_usuario as usu
                       left join tb_funcionario as fun
                       on usu.id_usuario = fun.id_usuario_fun

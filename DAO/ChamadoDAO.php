@@ -26,4 +26,9 @@ class ChamadoDAO extends Conexao{
         }
 
     }
+
+    public function CarregarEquipamentoSetor($setorUserLogado){
+        $conexao = parent::retornaConexao();
+        $comando = 'select id_equipamento, ident_equipamento from tb_alocar_equip where id_setor = ? and sit_alocar = ';
+    }
 }
