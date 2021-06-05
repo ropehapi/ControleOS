@@ -321,8 +321,7 @@ class UsuarioDAO extends Conexao
             $comando_sql = 'update tb_funcionario
                                 set email_func = ?,
                                     tel_func = ?,
-                                    endereco_func = ?,
-                                    id_setor = ?
+                                    endereco_func = ?
                                 where id_usuario_fun = ?';
             
             $this->sql = $this->conexao->prepare($comando_sql);
@@ -331,7 +330,6 @@ class UsuarioDAO extends Conexao
             $this->sql->bindValue($i++, $vo->getEmailFunc());
             $this->sql->bindValue($i++, $vo->getTelFunc());
             $this->sql->bindValue($i++, $vo->getEnderecoFunc());
-            $this->sql->bindValue($i++, $vo->getIdSetor());
             $this->sql->bindValue($i++, $vo->getUserId());
 
             $this->sql->execute();
@@ -341,6 +339,7 @@ class UsuarioDAO extends Conexao
 
         }catch (Exception $ex){
             $this->conexao->rollBack();
+            echo $ex->getMessage();
             return -1;
         }
     }
@@ -384,5 +383,29 @@ class UsuarioDAO extends Conexao
 
         return $this->sql->fetchAll();
         
+    }
+
+    public function RecuperarSenhaAtual($idUser){
+        $comando = 'select senha_usuario from tb_usuario where id_usuario = ?';
+    
+        $this->sql = $this->conexao->prepare($comando);
+        $this->sql->bindValue(1,$idUser);
+        $this->sql->setFetchMode(PDO::FETCH_ASSOC);
+        $this->sql->execute();
+        return $this->sql->fetchAll();
+    }
+
+    public function AlterarSenha($idUser,$senha){
+        $comando = 'update tb_usuario set senha_usuario = ? where id_usuario = ?';
+        $this->sql = $this->conexao->prepare($comando);
+        $this->sql->bindValue(1,$senha);
+        $this->sql->bindValue(2,$idUser);
+        
+        try{
+            $this->sql->execute();
+            return 1;
+        }catch(Exception $ex){
+            echo $ex->getMessage();
+        }
     }
 }

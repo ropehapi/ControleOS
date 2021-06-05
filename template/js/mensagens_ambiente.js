@@ -16,6 +16,16 @@ function RetornaMsg(num) {
         case 2:
             msg = 'Usuário não encontrado';
             break;
+        case 3:
+            msg = 'Senha atual não confere!';
+            break;
+        case 4:
+            msg = 'Sua senha precisa ter mais de 6 caracteres !';
+            break;
+
+        case 5:
+            msg = 'As senhas digitadas não conferem!';
+            break;
     }
 
     return msg;

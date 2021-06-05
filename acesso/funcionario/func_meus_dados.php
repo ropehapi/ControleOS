@@ -6,18 +6,15 @@ require_once '../../CTRL/UtilCTRL.php';
 
 $ctrl = new UsuarioCTRL;
 
-if (isset($_POST['btnGravar'])) {
+if (isset($_POST['btnAlterar'])) {
+
     $vo = new FuncionarioVO;
 
-    $nome = $_POST['nome'];
-    $email = $_POST['email'];
-    $telefone = $_POST['telefone'];
-    $endereco = $_POST['endereco'];
-
-    $vo->setNome($nome);
-    $vo->setEmailFunc($email);
-    $vo->setTelFunc($telefone);
-    $vo->setEnderecoFunc($endereco);
+    $vo->setNome($_POST['nome']);
+    $vo->setEmailFunc($_POST['email']);
+    $vo->setTelFunc($_POST['telefone']);
+    $vo->setEnderecoFunc($_POST['endereco']);
+    $vo->setIdUser(UtilCTRL::CodigoUserLogado());
 
     $ret = $ctrl->AlterarUserFun($vo);
 }
@@ -92,7 +89,7 @@ $dados = $ctrl->DetalharUsuario('');
                                 <input id="enrereco" value="<?= $dados[0]['endereco_func'] ?>" name="endereco" type="text" class="form-control" placeholder="Digite aqui">
                             </div>
 
-                            <button name="btnGravar" onclick="return ValidarTela(12)" class="btn btn-success">Alterar</button>
+                            <button name="btnAlterar" onclick="return ValidarTela(12)" class="btn btn-success">Alterar</button>
                         </form>
                     </div>
 

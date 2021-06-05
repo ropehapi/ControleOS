@@ -104,3 +104,24 @@ function InserirModelo() {
 
     return false;
 }
+
+function ValidarSenhaAtual(senha_atual_digitado){
+    if(ValidarTela(20)){
+        $.post("ajax/verificar_senha_atual.php",
+        {
+            senha_atual:senha_atual_digitado
+        },function(ret){
+            if(ret == 1){
+                $("#senhaPreenchida").show;
+                $("#divSenhaAtual").hide;
+                $("#btnValidar").hide;
+            }else{
+                $("#divSenhaAtual").show;
+                $("#senhaPreenchida").hide;
+                ValidarTela(21);
+            }
+        });
+    }
+
+    return false;
+}

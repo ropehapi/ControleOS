@@ -37,5 +37,17 @@ if (isset($ret)) {
                         toastr.success(RetornaMsg(2));
                  </script>";
             break;
+
+        case 3:
+            echo "<script>
+                        toastr.warning(RetornaMsg(4));
+                 </script>";
+            break;
+
+        case 4:
+            echo "<script>
+                        toastr.warning(RetornaMsg(5));
+                 </script>";
+            break;
     }
 }

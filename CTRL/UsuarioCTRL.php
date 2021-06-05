@@ -57,13 +57,6 @@ class UsuarioCTRL
         }
     }
 
-    public function AlterarSenha(UsuarioVO $vo)
-    {
-        if ($vo->getSenha() == '' || $vo->getNovaSenha() == '' || $vo->getrNovaSenha() == '') {
-            return 0;
-        }
-    }
-
     public function VerificarCpfCadastro($cpf)
     {
         $dao = new UsuarioDAO;
@@ -98,7 +91,7 @@ class UsuarioCTRL
 
     public function AlterarUserFun(FuncionarioVO $vo)
     {
-        if ($vo->getNome() == '' || $vo->getCPF() == '' || $vo->getEmailFunc() == '' || $vo->getTelFunc() == '' || $vo->getIdSetor() == '') {
+        if ($vo->getNome() == '' || $vo->getEmailFunc() == '' || $vo->getTelFunc() == '' ||$vo->getEnderecoFunc()=='') {
             return 0;
         }
 
@@ -166,5 +159,34 @@ class UsuarioCTRL
         } else {
             return 2;
         }
+    }
+
+    public function ValidarSenhaAtual($senha_atual){
+        $dao = new UsuarioDAO;
+        $user_senha_hash = $dao->RecuperarSenhaAtual(UtilCTRL::CodigoUserLogado());
+        $senha_hash = $user_senha_hash[0]['senha_usuario'];
+
+        return password_verify($senha_atual,$senha_hash);
+    }
+
+    public function AlterarSenha($senha,$rSenha){
+        if(trim($senha)=='' || trim($rSenha)==''){
+            return 0;
+        }
+
+        if(strlen(trim($senha)) <6){
+            return 3;
+        }
+
+        if(trim($senha) != trim($rSenha)){
+            return 4;
+        }
+
+        $dao = new UsuarioDAO;
+
+        return $dao->AlterarSenha(
+            UtilCTRL::CodigoUserLogado(),
+            UtilCTRL::RetornaCriptografado($senha)
+        );
     }
 }

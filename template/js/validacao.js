@@ -1,106 +1,117 @@
-function ValidarTela(tela){
+function ValidarTela(tela) {
 
     var ret = true;
 
-    switch(tela){
+    switch (tela) {
         case 1:
-            if($("#setor").val().trim()==''||$("#equip").val().trim()==''){
+            if ($("#setor").val().trim() == '' || $("#equip").val().trim() == '') {
                 toastr.warning(RetornaMsg(0));
                 ret = false;
             }
             break;
         case 2:
-            if($("#tipo").val().trim()==''){
+            if ($("#tipo").val().trim() == '') {
                 toastr.warning(RetornaMsg(0));
                 ret = false;
             }
             break;
         case 3:
-            if($("#nome").val().trim()==''){
+            if ($("#nome").val().trim() == '') {
                 toastr.warning(RetornaMsg(0));
                 ret = false;
             }
             break;
         case 4:
-            if($("#nome").val().trim()==''){
+            if ($("#nome").val().trim() == '') {
                 toastr.warning(RetornaMsg(0));
                 ret = false;
             }
             break;
         case 5:
-            if($("#tipo").val().trim()==''||$("#modelo").val().trim()==''||$("#ident").val().trim()==''||$("#desc").val().trim()==''){
+            if ($("#tipo").val().trim() == '' || $("#modelo").val().trim() == '' || $("#ident").val().trim() == '' || $("#desc").val().trim() == '') {
                 toastr.warning(RetornaMsg(0));
                 ret = false;
             }
             break;
         case 6:
-            if($("#setor").val().trim()==''){
+            if ($("#setor").val().trim() == '') {
                 toastr.warning(RetornaMsg(0));
                 ret = false;
             }
             break;
         case 7:
-            if($("#nome").val().trim()==''){
+            if ($("#nome").val().trim() == '') {
                 toastr.warning(RetornaMsg(0));
                 ret = false;
             }
             break;
         case 8:
-            if($("#nome").val().trim()==''){
-                 toastr.warning(RetornaMsg(0));
-                 ret = false;
+            if ($("#nome").val().trim() == '') {
+                toastr.warning(RetornaMsg(0));
+                ret = false;
             }
             break;
         case 9:
-            if($("#tipo").val().trim()==''||$("#nome").val().trim()==''||$("#cpf").val().trim()==''||$("#setor").val().trim()==''||$("#email").val().trim()==''||$("#telefone").val().trim()==''||$("#endereco").val().trim()==''){
+            if ($("#tipo").val().trim() == '' || $("#nome").val().trim() == '' || $("#cpf").val().trim() == '' || $("#setor").val().trim() == '' || $("#email").val().trim() == '' || $("#telefone").val().trim() == '' || $("#endereco").val().trim() == '') {
                 toastr.warning(RetornaMsg(0));
                 ret = false;
             }
             break;
         case 10:
-            if($("#senha").val().trim()==''||$("#novaSenha").val().trim()==''||$("#rNovaSenha").val().trim()==''){
+            if ($("#senha_atual").val().trim() == '') {
                 toastr.warning(RetornaMsg(0));
+                ret = false;
+            }
+
+            else if($("#novaSenha").val().trim().lenght <6){
+                toastr.warning(RetornaMsg(4));
+                ret = false;
+            }
+
+            
+            else if($("#novaSenha").val().trim() != $("#rNovaSenha").val().trim()){
+                toastr.warning(RetornaMsg(5));
                 ret = false;
             }
             break;
         case 11:
-        if($("#sitChamado").val().trim()==''){
-             toastr.warning(RetornaMsg(0));
-             ret = false;
-            }                
+            if ($("#sitChamado").val().trim() == '') {
+                toastr.warning(RetornaMsg(0));
+                ret = false;
+            }
             break;
         case 12:
-        if($("#nome").val().trim()==''||$("#email").val().trim()==''||$("#telefone").val().trim()==''||$("#endereco").val().trim()==''){
-            toastr.warning(RetornaMsg(0));
-            ret = false;
+            if ($("#nome").val().trim() == '' || $("#email").val().trim() == '' || $("#telefone").val().trim() == '' || $("#endereco").val().trim() == '') {
+                toastr.warning(RetornaMsg(0));
+                ret = false;
             }
             break;
         case 13:
-            if($("#equip").val().trim()==''||$("#descProblema").val().trim()==''){
-            toastr.warning(RetornaMsg(0));
-            ret = false;
+            if ($("#equip").val().trim() == '' || $("#descProblema").val().trim() == '') {
+                toastr.warning(RetornaMsg(0));
+                ret = false;
             }
             break;
         case 14:
-            if($("#senha").val().trim()==''||$("#novaSenha").val().trim()==''||$("#rNovaSenha"=='')){
+            if ($("#senha").val().trim() == '' || $("#novaSenha").val().trim() == '' || $("#rNovaSenha" == '')) {
                 toastr.warning(RetornaMsg(0));
                 ret = false;
             }
             break;
         case 15:
-            if($("#sitChamado").val().trim()==''){
+            if ($("#sitChamado").val().trim() == '') {
                 toastr.warning(RetornaMsg(0));
                 ret = false;
             }
             break;
         case 16:
-            if($("#data").val().trim()==''||$("#setor").val().trim()==''||$("#funcionario").val().trim()==''||$("#equip").val().trim()==''||$("#laudo").val().trim()==''){
+            if ($("#data").val().trim() == '' || $("#setor").val().trim() == '' || $("#funcionario").val().trim() == '' || $("#equip").val().trim() == '' || $("#laudo").val().trim() == '') {
                 toastr.warning(RetornaMsg(0));
                 ret = false;
             }
             break;
         case 17:
-            if($("#nome").val().trim()==''||$("#email").val().trim()==''||$("#telefone").val().trim()==''||$("#endereco").val().trim()==''){
+            if ($("#nome").val().trim() == '' || $("#email").val().trim() == '' || $("#telefone").val().trim() == '' || $("#endereco").val().trim() == '') {
                 toastr.warning(RetornaMsg(0));
                 ret = false;
             }
@@ -126,7 +137,7 @@ function ValidarTela(tela){
             }
 
             if ($("#tipo").val().trim() == '2') {
-                
+
                 if ($("#setor").val().trim() == '') {
                     toastr.warning(RetornarMsg(0));
                     return false;
@@ -136,13 +147,36 @@ function ValidarTela(tela){
             break;
 
         case 19:
-            if($("#cpf").val().trim() == '' || $("#pass").val().trim()==''){
+            if ($("#cpf").val().trim() == '' || $("#pass").val().trim() == '') {
                 toastr.warning(RetornaMsg(0));
                 return false;
             }
+
+        case 20:
+            if ($("#senha_atual").val().trim() == '') {
+                toastr.warning(RetornaMsg(0));
+                ret = false;
+            }
+
+            if($("#novaSenha").val().trim().lenght <6){
+                toastr.warning(RetornaMsg(4));
+                ret = false;
+            }
+
+            
+            if($("#novaSenha").val().trim() != $("#rNovaSenha").val().trim()){
+                toastr.warning(RetornaMsg(5));
+                ret = false;
+            }
+            break;
+
+        case 21:
+            toastr.warning(RetornaMsg(3));
+            ret = false;
+            break;
     }
 
-    
+
 
     return ret;
 }

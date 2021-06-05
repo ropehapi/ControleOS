@@ -2,7 +2,7 @@
 
 class UtilCTRL
 {
-    private static function IniciarSessao(){
+    public static function IniciarSessao(){
         if(!isset($_SESSION)){
             session_start();
         }

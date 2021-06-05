@@ -1,4 +1,7 @@
-<?php session_start() ?>
+<?php session_start();
+require_once $_SERVER['DOCUMENT_ROOT'] . '/ControleOS/CTRL/UtilCTRL.php';
+UtilCTRL::IniciarSessao();
+?>
 
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
