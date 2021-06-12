@@ -1,14 +1,13 @@
 <?php 
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/ControleOS/DAO/ChamadoDAO.php';
+require 'UtilCTRL.php';
 
 class ChamadoCTRL{
     public function BuscarChamadosFunc(ChamadoVo $vo){
         if($vo->getSitChamado()==''){
             return 0;
         }
-
-        
     } 
 
     public function AbrirChamado(ChamadoVo $vo){
@@ -30,5 +29,10 @@ class ChamadoCTRL{
         if($vo->getSitChamado()==''){
             return 0;
         }
+    }
+
+    public function CarregarEquipamentoSetor($idSetorLogado,$sit){
+        $dao = new ChamadoDAO;
+        return $dao->CarregarEquipamentoSetor($idSetorLogado,2);
     }
 }

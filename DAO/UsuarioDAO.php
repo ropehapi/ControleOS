@@ -60,11 +60,11 @@ class UsuarioDAO extends Conexao
             //Recuperar o ID do usuário cadastrado
             $id_user = $this->conexao->lastInsertId();
             $comando = 'insert into tb_funcionario (
-                id_usuario_fun,
+                id_usuario_func,
                 id_setor,
-                email_fun,
-                tel_fun,
-                endereco_fun
+                email_func,
+                tel_func,
+                endereco_func
             )
             values(?,?,?,?,?)';
             $this->sql = $this->conexao->prepare($comando);
@@ -181,12 +181,12 @@ class UsuarioDAO extends Conexao
                            tec.email_tec,
                            tec.endereco_tec,
                            fun.id_setor,
-                           fun.tel_fun,
-                           fun.endereco_fun,
-                           fun.email_fun
+                           fun.tel_func,
+                           fun.endereco_func,
+                           fun.email_func
                       from tb_usuario as usu
                       left join tb_funcionario as fun
-                      on usu.id_usuario = fun.id_usuario_fun
+                      on usu.id_usuario = fun.id_usuario_func
                       left join tb_tecnico as tec
                       on usu.id_usuario = tec.id_usuario_tec
                       where usu.id_usuario = ? ';
@@ -219,7 +219,7 @@ class UsuarioDAO extends Conexao
                 break;
 
             case 2:
-                $comando = 'delete from tb_funcionario where id_usuario_fun = ?';
+                $comando = 'delete from tb_funcionario where id_usuario_func = ?';
                 $this->sql = $this->conexao->prepare($comando);
                 $this->sql->bindValue(1, $idUsuario);
                 $this->conexao->beginTransaction();
@@ -373,7 +373,7 @@ class UsuarioDAO extends Conexao
                             fu.id_setor
                         from tb_usuario as usu
                         left join tb_funcionario as fu
-                        on usu.id_usuario = fu.id_usuario_fun
+                        on usu.id_usuario = fu.id_usuario_func
                         where usu.cpf_usuario = ? and usu.status_usuario = ?';
         $this->sql = $this->conexao->prepare($comando);
         $this->sql->setFetchMode(PDO::FETCH_ASSOC);

@@ -76,17 +76,17 @@ $dados = $ctrl->DetalharUsuario('');
 
                             <div class="form-group">
                                 <label>Email</label>
-                                <input id="email" value="<?= $dados[0]['email_fun'] ?>" name="email" type="text" class="form-control" placeholder="Digite aqui">
+                                <input id="email" value="<?= $dados[0]['email_func'] ?>" name="email" type="text" class="form-control" placeholder="Digite aqui">
                             </div>
 
                             <div class="form-group">
                                 <label>Telefone</label>
-                                <input id="telefone" value="<?= $dados[0]['tel_fun'] ?>" name="telefone" type="text" class="form-control" placeholder="Digite aqui">
+                                <input id="telefone" value="<?= $dados[0]['tel_func'] ?>" name="telefone" type="text" class="form-control" placeholder="Digite aqui">
                             </div>
 
                             <div class="form-group">
                                 <label>Endereço</label>
-                                <input id="enrereco" value="<?= $dados[0]['endereco_fun'] ?>" name="endereco" type="text" class="form-control" placeholder="Digite aqui">
+                                <input id="enrereco" value="<?= $dados[0]['endereco_func'] ?>" name="endereco" type="text" class="form-control" placeholder="Digite aqui">
                             </div>
 
                             <button name="btnAlterar" onclick="return ValidarTela(12)" class="btn btn-success">Alterar</button>
