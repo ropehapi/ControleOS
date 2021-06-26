@@ -26,7 +26,6 @@ if(isset($_POST['btnExcluir'])){
 }
 
 
-
 ?>
 <!-- http://localhost/controleosvep/ -->
 <!DOCTYPE html>

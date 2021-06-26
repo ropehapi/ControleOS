@@ -10,13 +10,17 @@ class ChamadoCTRL{
         }
     } 
 
-    public function AbrirChamado(ChamadoVo $vo){
+    public function AbrirChamado(ChamadoVo $vo , $idAlocar){
         if($vo->getIdEquip()==''||$vo->getDescProblema()==''){
             return 0;
         }
 
+        $vo->setIdUsuarioFunc(UtilCTRL::CodigoUserLogado());
+        $vo->setDataChamado(UtilCTRL::DataAtual());
+        $vo->setHoraChamado(UtilCTRL::HoraAtual());
+
         $dao = new ChamadoDAO();
-        return $dao->InserirChamadoDAO($vo);
+        return $dao->AbrirChamadoDAO($vo,$idAlocar);
     }
 
     public function EncerrarChamado(ChamadoVo $vo){
@@ -31,8 +35,8 @@ class ChamadoCTRL{
         }
     }
 
-    public function CarregarEquipamentoSetor($idSetorLogado,$sit){
+    public function CarregarEquipamentoSetor(){
         $dao = new ChamadoDAO;
-        return $dao->CarregarEquipamentoSetor($idSetorLogado,2);
+        return $dao->CarregarEquipamentoSetor(UtilCTRL::SetorUserLogado(),1);
     }
 }

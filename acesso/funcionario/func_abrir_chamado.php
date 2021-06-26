@@ -3,18 +3,17 @@
 require_once '../../VO/ChamadoVo.php';
 require_once '../../CTRL/ChamadoCTRL.php';
 
+$ctrl = new ChamadoCTRL;
+
 if(isset($_POST['btnGravar'])){
     $vo = new ChamadoVo;
-    $ctrl = new ChamadoCTRL;
+    $vo->setIdEquip(explode('-',$_POST['eq'])[0]);
+    $vo->setDescProblema($_POST['descProblema']);
 
-    $idEquip = $_POST['idEquip'];
-    $descProblema = $_POST['descProblema'];
-
-    $vo->setIdEquip($idEquip);
-    $vo->setDescProblema($descProblema);
-
-    $ret = $ctrl->AbrirChamado($vo);
+    $ret = $ctrl->AbrirChamado($vo,explode('-',$_POST['eq'])[1]);
 }
+
+$eqs = $ctrl->CarregarEquipamentoSetor();
 
 ?>
 <!DOCTYPE html>
@@ -63,20 +62,25 @@ if(isset($_POST['btnGravar'])){
                         <h3 class="card-title">Escreva de forma clara o problema do equipamento</h3>
                     </div>
                     <div class="card-body">
-                    <form method="POST" action="funcionario_abrir_chamado.php">
-                        <div class="form-group">
-                            <label>Escolha o equipamento</label>
-                            <select id="equip" name="idEquip" class="form-control select2" style="width: 100%;">
-                                <option value="" selected="selected">Selecione</option>
-                            </select>
-                        </div>
+                        <form method="POST" action="func_abrir_chamado.php">
+                            <div class="form-group">
+                                <label>Escolha o equipamento</label>
+                                <select id="eq" name="eq" class="form-control select2" style="width: 100%;">
+                                    <option value="" selected="selected">Selecione</option>
+                                    <?php foreach ($eqs as $item) { ?>
+                                        <option value="<?= $item['id_equipamento'] . '-' . $item['id_alocar'] ?>">
+                                        Identificação: <?= $item['ident_equipamento'] ?> / Descrição: <?= $item['desc_equipamento'] ?>
+                                        </option>
+                                    <?php } ?>
+                                </select>
+                            </div>
 
-                        <div class="form-group">
-                            <label>Escreva o problema apresentado</label>
-                            <textarea id="descProblema" name="descProblema" type="text" class="form-control" placeholder="Digite aqui"></textarea>
-                        </div>
+                            <div class="form-group">
+                                <label>Escreva o problema apresentado</label>
+                                <textarea id="descProblema" name="descProblema" type="text" class="form-control" placeholder="Digite aqui"></textarea>
+                            </div>
 
-                        <button name="btnGravar" onclick="return ValidarTela(13)" class="btn btn-success">Gravar</button>
+                            <button name="btnGravar" onclick="return ValidarTela(13)" class="btn btn-success">Gravar</button>
                         </form>
                     </div>
 
@@ -87,7 +91,8 @@ if(isset($_POST['btnGravar'])){
 
                     </div>
                     <div class="form-group">
-                        < </div> <hr>
+                        < </div>
+                            <hr>
 
                     </div>
                     <!-- /.card-body -->
