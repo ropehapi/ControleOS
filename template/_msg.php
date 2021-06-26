@@ -49,5 +49,12 @@ if (isset($ret)) {
                         toastr.warning(RetornaMsg(5));
                  </script>";
             break;
+
+            case 4:
+                echo "<script>
+                            toastr.warning(RetornaMsg(6));
+                     </script>";
+                break;
+
     }
 }

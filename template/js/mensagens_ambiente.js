@@ -26,6 +26,9 @@ function RetornaMsg(num) {
         case 5:
             msg = 'As senhas digitadas não conferem!';
             break;
+        case 6:
+            msg = 'Não foi encontrado nenhum registro';
+            break;
     }
 
     return msg;

@@ -59,26 +59,67 @@ class ChamadoDAO extends Conexao
         return $sql->fetchAll();
     }
 
-    public function FiltrarChamadoSetor($filtrarSit)
+    public function FiltrarChamadoSetor($idSetor, $situacao)
     {
         $conexao = parent::retornaConexao();
-        $comando = 'select cha.data_chamado,
-                           fun.id_funcionario,
-                           eq.id_equipamento,
-                           cha.problema,
-                           cha.data_atendimento,
-                           tec.id_tecnico,
-                           cha.data_encerramento,
-                           cha.laudo_atendimento
-                      from tb_chamado as cha
-                inner join tb_equipamento as eq
-                        on cha.id_equipamento = eq.id_equipamento
-                inner join tb_funcionario as fun
-                        on cha.id_funcionario = fun.id_funcionario
-                 left join tb_tecnico as tec
-                        on cha.id_tec = tec.id_tec';
-        $sql = new PDOStatement;
+        $comando = 'select 
+                            ch.data_chamado,
+                            ch.hora_chamado,
+                            usu_fun.nome_usuario as funcionario,
+                            eq.ident_equipamento,
+                            eq.desc_equipamento,
+                            ch.desc_problema,
+                            ch.data_atendimento,
+                            ch.hora_atendimento,
+                            usu_tec.nome_usuario as tecnico,
+                            ch.data_encerramento,
+                            ch.hora_encerramento,
+                            ch.laudo_chamado
+                        from
+                            tb_chamado as ch
+                    inner join
+                        tb_funcionario as fu
+                    on 
+                        ch.id_usuario_fun = fu_id_usuario_fun
+                    inner join 
+                        tb_usuario as usu_fun
+                    on 
+                        fu.id_usuario_fun = usu_fun.id_usuario
+                    inner join 
+                        tb_equipamento as eq
+                    on 
+                        ch.id_equipamento = eq.id_equipamento
+                    left join 
+                        tb_tecnico as te
+                    on
+                        te.id_usuario_tec = ch.id_usuario_tec
+                    left join
+                        tb_usuario as usu_tec
+                    on 
+                        usu_tec.id_usuario = te.id_usuario_tec
+                    inner join
+                        tb_alocar_equip as alo
+                    on 
+                        alo.id_equipamento = eq.id_equipamento
+                    where 
+                        alo.id_setor = ?';
+
+        switch ($situacao) {
+            case 1: //Aguardando
+                $comando .= ' and ch.data_atendimento is null and alo.sit_alocar = 3';
+                break;
+            case 2: //Em atendimento
+                $comando .= ' and ch.data_atendimento is not null and ch.data_encerramento is null and alo.sit_alocar = 3';
+                break;
+            case 3: //Finalizado
+                $comando .= ' and ch.data_encerramento is not null and alo.sit_alocar = 1';
+                break;
+        }
+
+        $comando .= ' order by ch.id_chamado DESC';
+
         $sql = $conexao->prepare($comando);
+        $sql->bindValue(1,$idSetor);
         $sql->setFetchMode(PDO::FETCH_ASSOC);
         $sql->execute();
         return $sql->fetchAll();

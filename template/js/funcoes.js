@@ -128,3 +128,10 @@ function ValidarSenhaAtual(senha_atual_digitado){
 
     return false;
 }
+
+function CarregarModalDetalharAtendimento(dataAtend,dataEnc,tec,laudo){
+    $("#data_hora_atend").val(dataAtend);
+    $("#data_hora_enc").val(dataEnc);
+    $("#tecnico").val(tec);
+    $("#laudo").val(laudo);
+}

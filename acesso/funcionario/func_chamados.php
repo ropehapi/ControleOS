@@ -1,15 +1,14 @@
 <?php
-require_once '../../VO/ChamadoVo.php';
 require_once '../../CTRL/ChamadoCTRL.php';
-
+$sit = '';
 if (isset($_POST['btnPesquisar'])) {
-    $vo = new ChamadoVo;
     $ctrl = new ChamadoCTRL;
+    $sit = $_POST['sitChamado'];
+    $chs = $ctrl->FiltrarChamadoSetor($sit);
 
-    $sitChamado = $_POST['sitChamado'];
-
-    $vo->setSitChamado($sitChamado);
-    $ret = $ctrl->BuscarChamadosFunc($vo);
+    if (count($chs) == 0) {
+        $ret = 5;
+    }
 }
 
 ?>
@@ -63,73 +62,76 @@ if (isset($_POST['btnPesquisar'])) {
                             <div class="form-group">
                                 <label>Escolha a situação do chamado</label>
                                 <select id="sitChamado" name="sitChamado" class="form-control select2" style="width: 100%;">
-                                    <option value="0" selected="selected">Todos</option>
-                                    <option value="1" selected="selected">Aguardando atendimento</option>
-                                    <option value="2" selected="selected">Em atendimento</option>
-                                    <option value="3" selected="selected">Finalizado</option>
+                                    <option value="0" <?= $sit == 0 ? 'selected' : '' ?> ">Todos</option>
+                                    <option value=" 1" <?= $sit == 1 ? 'selected' : '' ?> ">Aguardando atendimento</option>
+                                    <option value=" 2" <?= $sit == 2 ? 'selected' : '' ?> ">Em atendimento</option>
+                                    <option value=" 3" <?= $sit == 3 ? 'selected' : '' ?> ">Finalizado</option>
                                 </select>
                             </div>
 
-                            <button name="btnPesquisar" onclick="return ValidarTela(11)" class="btn btn-warning">Pesquisar</button>
+                            <button name=" btnPesquisar" onclick="return ValidarTela(11)" class="btn btn-warning">Pesquisar</button>
                         </form>
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Chamados encontrados</h3>
+                <?php if (isset($chs) && count($chs) > 0) { ?>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Chamados encontrados</h3>
 
-                                <div class="card-tools">
-                                    <div class="input-group input-group-sm" style="width: 150px;">
-                                        <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+                                    <div class="card-tools">
+                                        <div class="input-group input-group-sm" style="width: 150px;">
+                                            <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
 
-                                        <div class="input-group-append">
-                                            <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                                            <div class="input-group-append">
+                                                <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                                <!-- /.card-header -->
+                                <div class="card-body table-responsive p-0">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Data da abertura</th>
+                                                <th>Funcionário</th>
+                                                <th>Equipamento</th>
+                                                <th>Problema</th>
+                                                <th>Ação</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($chs as $item) { ?>
+                                                <tr>
+                                                    <td><?= $item['data_chamado'] ?></td>
+                                                    <td><?= $item['funcionario'] ?></td>
+                                                    <td><?= $item['ident_equipamento'] ?>/ <?= $item['desc_equipamento'] ?></td>
+                                                    <td><?= $item['desc_problema'] ?></td>
+                                                    
+                                                    <td>
+                                                        <?php if ($item['data_atendimento'] != '') { ?>
+                                                            <a href="#" data-toggle="modal" data-target="#modal-detalhe" onclick="return CarregarModalDetalharAtendimento('<?= $item['data_atendimento'] . ' às ' .$item['hora_atendimento'] ?>','<?= $item['data_encerramento'] . ' às ' .$item['hora_encerramento'] ?>','<?= $item['tecnico'] ?>','<?= $item['laudo_chamado'] ?>')" class="btn btn-warning btn-xs">Ver atendimento</a>
+                                                        <?php }else{ 
+                                                            echo '<i>Aguardando atendimento</i>';
+                                                         } ?>
+                                                    </td>
+                                                </tr>
+                                            <?php } ?>
+                                        </tbody>
+                                    </table>
+                                    <?php 
+                                    include_once 'modal/_ver_atendimento.php';
+                                    ?>
+                                </div>
+                                <!-- /.card-body -->
                             </div>
-                            <!-- /.card-header -->
-                            <div class="card-body table-responsive p-0">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>Data da abertura</th>
-                                            <th>Funcionário</th>
-                                            <th>Equipamento</th>
-                                            <th>Problema</th>
-                                            <th>Data atendimento</th>
-                                            <th>Tecnico</th>
-                                            <th>Data encerramento</th>
-                                            <th>Laudo</th>
-                                            <th>Ação</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>(Data da abertura)</td>
-                                            <td>(Funcionário)</td>
-                                            <td>(Equipamento)</td>
-                                            <td>(Problema)</td>
-                                            <td>(Data atendimento)</td>
-                                            <td>(Técnico)</td>
-                                            <td>(Data encerramento)</td>
-                                            <td>(Laudo)</td>
-                                            <td>
-                                                <a href="#" class="btn btn-warning btn-xs">Alterar</a>
-                                                <a href="#" class="btn btn-danger btn-xs">Excluir</a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- /.card-body -->
+                            <!-- /.card -->
                         </div>
-                        <!-- /.card -->
                     </div>
-                </div>
+                <?php } ?>
                 <!-- /.card-body -->
                 <!-- /.card-footer-->
         </div>
