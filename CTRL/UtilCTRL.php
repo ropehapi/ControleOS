@@ -2,20 +2,23 @@
 
 class UtilCTRL
 {
-    public static function IniciarSessao(){
-        if(!isset($_SESSION)){
+    public static function IniciarSessao()
+    {
+        if (!isset($_SESSION)) {
             session_start();
         }
     }
 
-    public static function CriarSessao($id,$tipo,$idSetor){
+    public static function CriarSessao($id, $tipo, $idSetor)
+    {
         self::IniciarSessao();
         $_SESSION['cod'] = $id;
         $_SESSION['tipo'] = $tipo;
         $_SESSION['setor'] = $idSetor;
     }
 
-    public static function Deslogar(){
+    public static function Deslogar()
+    {
         self::IniciarSessao();
 
         unset($_SESSION['cod']);
@@ -25,13 +28,15 @@ class UtilCTRL
         self::VoltarPaginaLogin();
     }
 
-    public static function VerificarLogado(){
-        if(!isset($_SESSION['cod'])||$_SESSION['cod']==''){
+    public static function VerificarLogado()
+    {
+        if (!isset($_SESSION['cod']) || $_SESSION['cod'] == '') {
             self::VoltarPaginaLogin();
         }
     }
 
-    public static function VoltarPaginaLogin(){
+    public static function VoltarPaginaLogin()
+    {
         header('http://localhost/ControleOS/acesso/login/acessar.php');
         exit;
     }
@@ -93,5 +98,20 @@ class UtilCTRL
         }
 
         return $nome;
+    }
+
+    public static function SituacaoChamado($dataAtendimento, $dataEncerramento)
+    {
+        $sit = '';
+        
+        if ($dataAtendimento != '' && $dataEncerramento != '') {
+            $sit = '<i>Encerrado</i>';
+        } else if ($dataAtendimento == '') {
+            $sit = '<i>Aguardando atendimento</i>';
+        } else if ($dataAtendimento != '' && $dataEncerramento == '') {
+            $sit = '<i>Em atendimento</i>';
+        }
+
+        return $sit;
     }
 }

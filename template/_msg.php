@@ -50,11 +50,10 @@ if (isset($ret)) {
                  </script>";
             break;
 
-            case 4:
-                echo "<script>
+        case 5:
+            echo "<script>
                             toastr.warning(RetornaMsg(6));
                      </script>";
-                break;
-
+            break;
     }
 }

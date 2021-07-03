@@ -1,19 +1,18 @@
 <?php
 
-require_once '../../VO/ChamadoVo.php';
-require_once '../../CTRL/ChamadoCTRL.php';
+require_once $_SERVER['DOCUMENT_ROOT'] .  '/ControleOS/VO/ChamadoVo.php';
+require_once $_SERVER['DOCUMENT_ROOT'] .  '/ControleOS/CTRL/ChamadoCTRL.php';
 
 if(isset($_POST['btnPesquisar'])){
-    $vo =new ChamadoVo;
     $ctrl = new ChamadoCTRL;
+    $chamados = $ctrl->FiltrarChamadosTec($_POST['sitChamado']);
 
-    $sitChamado = $_POST['sitChamado'];
-
-    $vo->setSitChamado($sitChamado);
-    $ret = $ctrl->BuscarChamadosTec($vo);
+    if(count($chamados)==0){
+        $ret = 5;
+    }
 }
 
-
+$chamados = $ctrl->FiltrarChamadosTec($_POST['sitChamado']);
 ?>
 <!DOCTYPE html>
 <html>
@@ -40,7 +39,7 @@ if(isset($_POST['btnPesquisar'])){
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>Filtre seus chamados</h1>
+                            <h1>Filtre os chamados</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
@@ -65,64 +64,53 @@ if(isset($_POST['btnPesquisar'])){
                             <div class="form-group">
                                 <label>Escolha a situação do chamado</label>
                                 <select id="sitChamado" name="sitChamado" class="form-control select2" style="width: 100%;">
-                                    <option value="" selected="selected">Selecione</option>
-                                    <option selected="selected">Todos</option>
+                                    <option value="0" <?= $sit == 0 ? 'selected' : '' ?> ">Todos</option>
+                                    <option value=" 1" <?= $sit == 1 ? 'selected' : '' ?> ">Aguardando atendimento</option>
+                                    <option value=" 2" <?= $sit == 2 ? 'selected' : '' ?> ">Em atendimento</option>
+                                    <option value=" 3" <?= $sit == 3 ? 'selected' : '' ?> ">Finalizado</option>
                                 </select>
                             </div>
 
-                            <button onclick="return ValidarTela(15)" name="btnPesquisar" class="btn btn-success">Pesquisar</button>
+                            <button onclick=" return ValidarTela(15)" name="btnPesquisar" class="btn btn-success">Pesquisar</button>
                         </form>
                     </div>
 
-                    <div class="card-body table-responsive p-0">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Data da abertura</th>
-                                    <th>Funcionário</th>
-                                    <th>Equipamento</th>
-                                    <th>Problema</th>
-                                    <th>Data atendimento</th>
-                                    <th>Tecnico</th>
-                                    <th>Data encerramento</th>
-                                    <th>Laudo</th>
-                                    <th>Ação</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>(Data da abertura)</td>
-                                    <td>(Funcionário)</td>
-                                    <td>(Equipamento)</td>
-                                    <td>(Problema)</td>
-                                    <td>(Data atendimento)</td>
-                                    <td>(Técnico)</td>
-                                    <td>(Data encerramento)</td>
-                                    <td>(Laudo)</td>
-                                    <td>
-                                        <a href="#" class="btn btn-warning btn-xs">Alterar</a>
-                                        <a href="#" class="btn btn-danger btn-xs">Excluir</a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <?php if (isset($chamados) && count($chamados) > 0) { ?>
+                        <div class="card-body table-responsive p-0">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Data da abertura</th>
+                                        <th>Funcionário</th>
+                                        <th>Equipamento</th>
+                                        <th>Problema</th>
+                                        <th>Setor</th>
+                                        <th>Situação</th>
+                                        <th>Ação</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php foreach ($chamados as $item) { ?>
+                                    <tr>
+                                        <td><?= $item['data_chamado'] ?>/<?= $item['hora_chamado'] ?></td>
+                                        <td><?= $item['funcionario'] ?></td>
+                                        <td><?= $item['desc_equipamento'] ?>/<?= $item['ident_equipamento'] ?></td>
+                                        <td><?= $item['desc_problema'] ?></td>
+                                        <td><?= $item['nome_setor'] ?></td>
+                                        <td><?= $item['tecnico'] ?></td>
+                                        <td><?= UtilCTRL::SituacaoChamado($item['data_atendimento'],$item['data_encerramento']) ?></td>
+                                        <td>
+                                            <a href="#" class="btn btn-warning btn-xs">Alterar</a>
+                                            <a href="#" class="btn btn-danger btn-xs">Excluir</a>
+                                        </td>
+                                    </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    <?php } ?>
 
                 </div>
-                <div>
-                    <div class="form-group">
-
-
-                    </div>
-                    <div class="form-group">
-                        < </div>
-                            <hr>
-
-                    </div>
-                    <!-- /.card-body -->
-                    <!-- /.card-footer-->
-                </div>
-                <!-- /.card -->
 
             </section>
             <!-- /.content -->
