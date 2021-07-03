@@ -3,16 +3,14 @@
 require_once $_SERVER['DOCUMENT_ROOT'] .  '/ControleOS/VO/ChamadoVo.php';
 require_once $_SERVER['DOCUMENT_ROOT'] .  '/ControleOS/CTRL/ChamadoCTRL.php';
 
-if(isset($_POST['btnPesquisar'])){
+if (isset($_POST['btnPesquisar'])) {
     $ctrl = new ChamadoCTRL;
-    $chamados = $ctrl->FiltrarChamadosTec($_POST['sitChamado']);
+    $chamados = $ctrl->FiltrarChamadosTec($_POST['sitChamado'],null);
 
-    if(count($chamados)==0){
+    if (count($chamados) == 0) {
         $ret = 5;
     }
 }
-
-$chamados = $ctrl->FiltrarChamadosTec($_POST['sitChamado']);
 ?>
 <!DOCTYPE html>
 <html>
@@ -64,10 +62,10 @@ $chamados = $ctrl->FiltrarChamadosTec($_POST['sitChamado']);
                             <div class="form-group">
                                 <label>Escolha a situação do chamado</label>
                                 <select id="sitChamado" name="sitChamado" class="form-control select2" style="width: 100%;">
-                                    <option value="0" <?= $sit == 0 ? 'selected' : '' ?> ">Todos</option>
-                                    <option value=" 1" <?= $sit == 1 ? 'selected' : '' ?> ">Aguardando atendimento</option>
-                                    <option value=" 2" <?= $sit == 2 ? 'selected' : '' ?> ">Em atendimento</option>
-                                    <option value=" 3" <?= $sit == 3 ? 'selected' : '' ?> ">Finalizado</option>
+                                    <option value="0" ">Todos</option>
+                                    <option value=" 1" ">Aguardando atendimento</option>
+                                    <option value=" 2" ">Em atendimento</option>
+                                    <option value=" 3" ">Finalizado</option>
                                 </select>
                             </div>
 
@@ -90,20 +88,18 @@ $chamados = $ctrl->FiltrarChamadosTec($_POST['sitChamado']);
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <?php foreach ($chamados as $item) { ?>
-                                    <tr>
-                                        <td><?= $item['data_chamado'] ?>/<?= $item['hora_chamado'] ?></td>
-                                        <td><?= $item['funcionario'] ?></td>
-                                        <td><?= $item['desc_equipamento'] ?>/<?= $item['ident_equipamento'] ?></td>
-                                        <td><?= $item['desc_problema'] ?></td>
-                                        <td><?= $item['nome_setor'] ?></td>
-                                        <td><?= $item['tecnico'] ?></td>
-                                        <td><?= UtilCTRL::SituacaoChamado($item['data_atendimento'],$item['data_encerramento']) ?></td>
-                                        <td>
-                                            <a href="#" class="btn btn-warning btn-xs">Alterar</a>
-                                            <a href="#" class="btn btn-danger btn-xs">Excluir</a>
-                                        </td>
-                                    </tr>
+                                    <?php foreach ($chamados as $item) { ?>
+                                        <tr>
+                                            <td><?= $item['data_chamado'] ?>/<?= $item['hora_chamado'] ?></td>
+                                            <td><?= $item['nome_funcionario'] ?></td>
+                                            <td><?= $item['desc_equipamento'] ?>/<?= $item['ident_equipamento'] ?></td>
+                                            <td><?= $item['desc_problema'] ?></td>
+                                            <td><?= $item['nome_setor'] ?></td>
+                                            <td><?= UtilCTRL::SituacaoChamado($item['data_atendimento'], $item['data_encerramento']) ?></td>
+                                            <td>
+                                                <a href="tec_atender_chamado.php?cod<?= $item['id_chamado'] ?>" class="btn btn-warning btn-xs">Ver mais</a>
+                                            </td>
+                                        </tr>
                                     <?php } ?>
                                 </tbody>
                             </table>

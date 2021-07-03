@@ -9,7 +9,7 @@ class ChamadoDAO extends Conexao
     {
         $conexao = parent::retornaConexao();
         $comando = 'insert into tb_chamado
-                    (desc_problema,data_chamado,hora_chamado,id_usuario,id_equipamento)
+                    (desc_problema,data_chamado,hora_chamado,id_usuario_func,id_equipamento)
                     values(?,?,?,?,?)';
         $sql = new PDOStatement();
         $sql = $conexao->prepare($comando);
@@ -24,7 +24,7 @@ class ChamadoDAO extends Conexao
         try {
             $sql->execute();
 
-            $comando =  'update tb_alocar set sit_alocar = 3 where id_alocar = ?';
+            $comando =  'update tb_alocar_equip set sit_alocar = 3 where id_alocar = ?';
             $sql = $conexao->prepare($comando);
             $sql->bindValue(1, $idAlocar);
 
@@ -35,7 +35,7 @@ class ChamadoDAO extends Conexao
             return 1;
         } catch (Exception $ex) {
             $conexao->rollBack();
-            return -1;
+            echo $ex->getMessage();
         }
     }
 
@@ -80,11 +80,11 @@ class ChamadoDAO extends Conexao
                     inner join
                         tb_funcionario as fu
                     on 
-                        ch.id_usuario_fun = fu_id_usuario_fun
+                        ch.id_usuario_func = fu_id_usuario_func
                     inner join 
                         tb_usuario as usu_fun
                     on 
-                        fu.id_usuario_fun = usu_fun.id_usuario
+                        fu.id_usuario_func = usu_fun.id_usuario
                     inner join 
                         tb_equipamento as eq
                     on 
@@ -125,16 +125,17 @@ class ChamadoDAO extends Conexao
         return $sql->fetchAll();
     }
 
-    public function FiltrarChamadosTec($FiltrarSit)
+    public function FiltrarChamadosTec($FiltrarSit,$cod)
     {
+        $conexao = parent::retornaConexao();
         $comando = 'select cha.id_chamado,
                                cha.data_chamado,
                                cha.data_atendimento,
                                cha.data_encerramento,
                                cha.hora_chamado,
                                usu_func.nome_usuario as nome_funcionario,
-                               equip.ident_equip,
-                               equip.desc_equip,
+                               equip.ident_equipamento,
+                               equip.desc_equipamento,
                                cha.desc_problema,
                                se.nome_setor
                             from tb_chamado as cha
@@ -143,9 +144,9 @@ class ChamadoDAO extends Conexao
                             on cha.id_equipamento = equip.id_equipamento
                             
                         inner join tb_funcionario as func
-                            on cha.id_usuario_fun = func.id_usuario_fun
+                            on cha.id_usuario_func = func.id_usuario_func
                         inner join tb_usuario as usu_func
-                            on func.id_usuario_fun = usu_func.id_usuario
+                            on func.id_usuario_func = usu_func.id_usuario
                         
                         inner join tb_alocar_equip as alo
                             on alo.id_equipamento = equip.id_equipamento
@@ -160,13 +161,17 @@ class ChamadoDAO extends Conexao
 
         if ($FiltrarSit == 3)
             $comando .= ' where cha.data_encerramento is not null';
-        
+
+        if($cod != null){
+            $comando .= ' where cha.id_chamado = ' . $cod;
+        }
+
         $comando .= ' order by cha.id_chamado DESC';
 
-        $this->sql = $this->conexao->prepare($comando);
-        $this->sql->setFetchMode(PDO::FETCH_ASSOC);
-        $this->sql->execute();
+        $sql = $conexao->prepare($comando);
+        $sql->setFetchMode(PDO::FETCH_ASSOC);
+        $sql->execute();
 
-        return $this->sql->fetchAll();
+        return $sql->fetchAll();
     }
 }

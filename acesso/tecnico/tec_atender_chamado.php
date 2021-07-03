@@ -1,3 +1,20 @@
+<?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/ControleOS/CTRL/ChamadoCTRL.php';
+
+$ctrl = new ChamadoCTRL;
+
+if (isset($_GET['cod']) && is_numeric($_GET['cod'])) {
+    $dados = $ctrl->FiltrarChamadosTec(null, $_GET['cod']);
+
+    if (count($dados) == 0) {
+        header('location : tec_chamados.php');
+        exit;
+    }
+} else {
+    header('location : tec_chamados.php');
+}
+
+?>
 <!DOCTYPE html>
 <html>
 
@@ -45,47 +62,43 @@
                     </div>
                     <div class="card-body">
 
-                        <div class="form-group">
-                            <label>Data</label>
-                            <input type="text" class="form-control" placeholder="Digite aqui">
+                        <div class="row">
+
+                            <div class="form-group col-md-6">
+                                <label>Data</label>
+                                <input value="<?= $dados[0]['data_chamado'] ?>/<?= $dados[0]['hora_chamado'] ?>" type="text" disabled class="form-control" placeholder="Digite aqui">
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label>Setor</label>
+                                <input value="<?= $dados[0]['nome_setor'] ?>" type="text" disabled class="form-control" placeholder="Digite aqui">
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label>Funcionário</label>
+                                <input value="<?= $dados[0]['funcionario'] ?>" type="text" disabled class="form-control" placeholder="Digite aqui">
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label>Equipamento</label>
+                                <input value="<?= $dados[0]['ident_equipamento'] ?>/<?= $dados[0]['desc_equipamento'] ?>" type="text" disabled class="form-control" placeholder="Digite aqui">
+                            </div>
+
+                            <div class="form-group col-md-12">
+                                <label>Problema</label>
+                                <textarea value="<?= $dados[0]['problema_chamado'] ?>" readonly class="form-control" placeholder="Digite aqui"></textarea>
+                            </div>
+
+                            <div class="form-group col-md-12">
+                                <label>Laudo</label>
+                                <textarea value="<?= $dados[0][''] ?>" class="form-control" placeholder="Digite aqui"></textarea>
+                            </div>
+
+
                         </div>
-
-                        <div class="form-group">
-                            <label>Setor</label>
-                            <input type="text" class="form-control" placeholder="Digite aqui">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Funcionário</label>
-                            <input type="text" class="form-control" placeholder="Digite aqui">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Equipamento</label>
-                            <input type="text" class="form-control" placeholder="Digite aqui">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Laudo</label>
-                            <textarea type="text" class="form-control" placeholder="Digite aqui"></textarea>
-                        </div>
-
-                        <button class="btn btn-success">Gravar</button>
-
+                        <button class="btn btn-success">Finalizar</button>
                     </div>
 
-                </div>
-                <div>
-                    <div class="form-group">
-
-
-                    </div>
-                    <div class="form-group">
-                        < </div> <hr>
-
-                    </div>
-                    <!-- /.card-body -->
-                    <!-- /.card-footer-->
                 </div>
                 <!-- /.card -->
 

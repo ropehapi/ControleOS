@@ -52,9 +52,9 @@ class ChamadoCTRL
         return $dao->FiltrarChamadoSetor(UtilCTRL::SetorUserLogado(), $situacao);
     }
 
-    public function FiltrarChamadosTec($situacao)
+    public function FiltrarChamadosTec($situacao,$cod)
     {
         $dao = new ChamadoDAO;
-        return $dao->FiltrarChamadosTec($situacao);
+        return $dao->FiltrarChamadosTec($situacao,$cod);
     }
 }
